@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Dialog/DialogData.h"
 #include "DialogComponent.generated.h"
 
 
@@ -16,12 +17,18 @@ public:
 	// Sets default values for this component's properties
 	UDialogComponent();
 
+	FString GetDialogName() const {return DialogName;}
+
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	UPROPERTY(BlueprintReadWrite)
+	TMap<int64, FDialogTopicStruct> DialogTopic;
+
+	UPROPERTY(BlueprintReadWrite)
+	FString DialogName;
+
 public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-	                           FActorComponentTickFunction* ThisTickFunction) override;
 };

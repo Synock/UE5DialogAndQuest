@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/DialogComponent.h"
 #include "UObject/Interface.h"
 #include "DialogInterface.generated.h"
 
@@ -22,4 +23,8 @@ class DIALOGANDQUESTPLUGIN_API IDialogInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+
+	int32 GetRelation() const;
+
+	UDialogComponent* GetDialogComponent() const;
 };

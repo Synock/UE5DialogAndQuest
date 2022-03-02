@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/DialogComponent.h"
 #include "DialogWindow.generated.h"
+
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnExitEvent);
 
 /**
  * 
@@ -13,5 +17,28 @@ UCLASS()
 class DIALOGANDQUESTPLUGIN_API UDialogWindow : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+protected:
+
+	UPROPERTY(BlueprintReadWrite)
+	UDialogComponent* DialogComponent = nullptr;
+
+	UPROPERTY(BlueprintReadWrite)
+	class UDialogFooterWidget* Footer = nullptr;
+
+	UPROPERTY(BlueprintReadWrite)
+	class UDialogHeaderWidget* Header = nullptr;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	const UDialogComponent* GetDialogComponent() const { return DialogComponent; }
+
+	UFUNCTION(BlueprintCallable)
+	void InitDialogWindow(UDialogComponent* InputDialogComponent);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void InitDialogUI(UDialogComponent* InputDialogComponent);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnExitEvent OnExit;
 };

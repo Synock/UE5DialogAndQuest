@@ -3,3 +3,9 @@
 
 #include "UI/DialogWindow.h"
 
+void UDialogWindow::InitDialogWindow(UDialogComponent* InputDialogComponent)
+{
+	DialogComponent = InputDialogComponent;
+	InitDialogUI(InputDialogComponent);
+}
+
