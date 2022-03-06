@@ -3,30 +3,25 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/DialogComponent.h"
+#include "Components/DialogMainComponent.h"
 #include "UObject/Interface.h"
-#include "DialogInterface.generated.h"
+#include "DialogGameModeInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE()
-class UDialogInterface : public UInterface
+class UDialogGameModeInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
 /**
- * 
+ *
  */
-class DIALOGANDQUESTPLUGIN_API IDialogInterface
+class DIALOGANDQUESTPLUGIN_API IDialogGameModeInterface
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-
-	virtual int32 GetRelation() const = 0;
-
-	virtual UDialogComponent* GetDialogComponent() const = 0;
-
-
+	virtual UDialogMainComponent* GetMainDialogComponent() = 0;
 };

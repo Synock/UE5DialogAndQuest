@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DialogTextChunkWidget.h"
 #include "DialogWindow.h"
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Blueprint/UserWidget.h"
 #include "DialogTopicButtonWidget.generated.h"
+
 
 /**
  * 
@@ -18,8 +20,19 @@ class DIALOGANDQUESTPLUGIN_API UDialogTopicButtonWidget : public UUserWidget, pu
 
 protected:
 
+	UPROPERTY(BlueprintReadOnly)
 	UDialogWindow* ParentDialog = nullptr;
 
+	UPROPERTY(BlueprintReadOnly)
+	FDialogTextData LocalData;
 
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void InitData(const FDialogTextData& ItemData);
+
+	UFUNCTION(BlueprintCallable)
+	void InitParent(UDialogWindow* Parent);
+
+	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 	
 };

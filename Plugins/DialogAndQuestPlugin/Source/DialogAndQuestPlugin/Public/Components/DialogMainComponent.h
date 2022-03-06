@@ -44,4 +44,11 @@ public:
 	void AddBundle(const FDialogTopicBundleStruct& Bundle);
 
 	void AddMetaBundle(const FDialogTopicMetaBundleStruct& MetaBundle);
+
+	UFUNCTION(BlueprintCallable)
+	TArray<FDialogTopicStruct> GetAllDialogTopicForBundle(int64 BundleId) const;
+
+	UFUNCTION(BlueprintCallable)
+	TArray<FDialogTopicStruct> GetAllDialogTopicForMetaBundle(int64 BundleMetaId) const;
+
 };

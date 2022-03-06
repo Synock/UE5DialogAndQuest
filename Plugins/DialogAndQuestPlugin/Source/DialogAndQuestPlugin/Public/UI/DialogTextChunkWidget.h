@@ -13,7 +13,7 @@ struct FDialogTextData
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite)
-	int64 Id;
+	int64 Id = 0;
 
 	UPROPERTY(BlueprintReadWrite)
 	FString TopicName;
@@ -30,6 +30,9 @@ class DIALOGANDQUESTPLUGIN_API UDialogTextChunkData : public UObject
 public:
 	UPROPERTY(BlueprintReadWrite)
 	FDialogTextData Data;
+
+	UPROPERTY(BlueprintReadWrite)
+	class UDialogWindow* Parent = nullptr;
 };
 
 
@@ -46,5 +49,15 @@ protected:
 	void InitData(const FDialogTextData& ItemData);
 
 	UPROPERTY(BlueprintReadOnly)
-	int64 ItemID;
+	int64 ItemID = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+	FDialogTextData LocalData;
+
+	UPROPERTY(BlueprintReadOnly)
+	UDialogWindow* ParentDialog = nullptr;
+
+public:
+
+	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 };

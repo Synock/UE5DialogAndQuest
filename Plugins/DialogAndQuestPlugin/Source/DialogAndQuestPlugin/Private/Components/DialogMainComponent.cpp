@@ -36,3 +36,31 @@ void UDialogMainComponent::AddMetaBundle(const FDialogTopicMetaBundleStruct& Met
 {
 	DialogMetaBundle.Add(MetaBundle.Id, MetaBundle);
 }
+
+TArray<FDialogTopicStruct> UDialogMainComponent::GetAllDialogTopicForBundle(int64 BundleId) const
+{
+	TArray<FDialogTopicStruct> Out;
+	if(DialogBundle.Contains(BundleId))
+	{
+		for(auto & ID : DialogBundle[BundleId].TopicList)
+		{
+			if(DialogTopic.Find(ID))
+				Out.Add(DialogTopic[ID]);
+		}
+	}
+
+	return Out;
+}
+
+TArray<FDialogTopicStruct> UDialogMainComponent::GetAllDialogTopicForMetaBundle(int64 BundleMetaId) const
+{
+	TArray<FDialogTopicStruct> Out;
+	if(DialogMetaBundle.Find(BundleMetaId))
+	{
+		for(auto & ID : DialogMetaBundle[BundleMetaId].TopicBundleList)
+		{
+			Out.Append(GetAllDialogTopicForBundle(ID));
+		}
+	}
+	return Out;
+}

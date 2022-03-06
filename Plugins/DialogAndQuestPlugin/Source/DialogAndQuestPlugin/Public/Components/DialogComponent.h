@@ -19,6 +19,8 @@ public:
 
 	FString GetDialogName() const {return DialogName;}
 
+	TArray<FDialogTopicStruct> GetAllDialogTopic() const;
+
 
 protected:
 	// Called when the game starts
@@ -31,4 +33,10 @@ protected:
 	FString DialogName;
 
 public:
+
+	UFUNCTION(BlueprintCallable)
+	void InitDialogFromID(int64 ID);
+
+	UFUNCTION(BlueprintCallable)
+	const FDialogTopicStruct& GetDialogTopic(int64 ID) const;
 };

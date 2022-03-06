@@ -5,13 +5,14 @@
 #include "CoreMinimal.h"
 #include "Components/DialogMainComponent.h"
 #include "GameFramework/GameModeBase.h"
+#include "Interfaces/DialogGameModeInterface.h"
 #include "DialogAndQuestGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DIALOGANDQUEST_API ADialogAndQuestGameModeBase : public AGameModeBase
+class DIALOGANDQUEST_API ADialogAndQuestGameModeBase : public AGameModeBase, public IDialogGameModeInterface
 {
 	GENERATED_BODY()
 
@@ -25,6 +26,8 @@ public:
 
 	ADialogAndQuestGameModeBase();
 
+	//const UDialogMainComponent* GetMainDialogComponent() const {return DialogComponent;}
 
+	virtual UDialogMainComponent* GetMainDialogComponent() override {return DialogComponent;};
 	
 };

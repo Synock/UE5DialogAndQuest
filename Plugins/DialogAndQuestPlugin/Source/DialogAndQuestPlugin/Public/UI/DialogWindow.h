@@ -29,6 +29,12 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	class UDialogHeaderWidget* Header = nullptr;
 
+	UPROPERTY(BlueprintReadWrite)
+	class UDialogTopicWidget* TopicList = nullptr;
+
+	UPROPERTY(BlueprintReadWrite)
+	class UDialogTextWidget* TopicText = nullptr;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	const UDialogComponent* GetDialogComponent() const { return DialogComponent; }
@@ -36,8 +42,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void InitDialogWindow(UDialogComponent* InputDialogComponent);
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void InitDialogUI(UDialogComponent* InputDialogComponent);
+	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
+	void InitDialogUI();
+
+	UFUNCTION(BlueprintCallable)
+	void DisplayDialogTopic(int64 ID);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnExitEvent OnExit;
