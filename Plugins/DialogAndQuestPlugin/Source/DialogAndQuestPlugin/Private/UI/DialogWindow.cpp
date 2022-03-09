@@ -24,3 +24,13 @@ void UDialogWindow::DisplayDialogTopic(int64 ID)
 	TopicText->AddTopicText(ID);
 }
 
+void UDialogWindow::DisplayDialogTopicFromString(const FString& ID)
+{
+	TopicText->AddTopicText(DialogComponent->GetDialogTopicID(ID));
+}
+
+void UDialogWindow::CloseWindow()
+{
+	RemoveFromParent();
+}
+

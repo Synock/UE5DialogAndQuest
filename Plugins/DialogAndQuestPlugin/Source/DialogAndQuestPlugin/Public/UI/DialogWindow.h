@@ -48,6 +48,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DisplayDialogTopic(int64 ID);
 
+	UFUNCTION(BlueprintCallable)
+	void DisplayDialogTopicFromString(const FString& ID);
+
+	UFUNCTION(BlueprintCallable)
+	void CloseWindow();
+
 	UPROPERTY(BlueprintAssignable)
 	FOnExitEvent OnExit;
 };

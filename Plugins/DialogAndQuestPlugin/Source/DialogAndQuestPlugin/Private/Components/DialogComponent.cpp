@@ -59,10 +59,41 @@ void UDialogComponent::InitDialogFromID(int64 ID)
 	for(auto & DialogData : FullDialog)
 	{
 		DialogTopic.FindOrAdd(DialogData.Id,DialogData);
+		DialogTopicLUT.FindOrAdd(DialogData.Topic,DialogData.Id);
 	}
 }
 
 const FDialogTopicStruct& UDialogComponent::GetDialogTopic(int64 ID) const
 {
 	return DialogTopic[ID];
+}
+
+int64 UDialogComponent::GetDialogTopicID(const FString& ID) const
+{
+	 if(DialogTopicLUT.Contains(ID))
+	 	return *DialogTopicLUT.Find(ID);
+
+	return 0;
+}
+
+FString UDialogComponent::ParseTextHyperlink(const FString& OriginalString) const
+{
+	FString ActualOut;
+	TArray<FString> Out;
+	OriginalString.ParseIntoArray(Out,TEXT(" "),true);
+	for(const auto & Word : Out)
+	{
+		if(DialogTopicLUT.Contains(Word))
+		{
+			//"+ FString::FromInt(*DialogTopicLUT.Find(Word)) +"
+			//ActualOut += L"<DialogLink id=\"test\" >"+ Word + L"</> ";
+			ActualOut += L"<DialogLink id=\""+Word+"\">"+ Word + L"</> ";
+		}
+		else
+		{
+			ActualOut+= Word + " ";
+		}
+	}
+
+	return ActualOut;
 }

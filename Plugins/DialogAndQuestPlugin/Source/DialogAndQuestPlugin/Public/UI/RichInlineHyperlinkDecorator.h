@@ -17,11 +17,12 @@ class DIALOGANDQUESTPLUGIN_API URichInlineHyperlinkDecorator : public URichTextB
 protected :
 
 public:
+
 	UPROPERTY(EditAnywhere, Category=Appearance)
 	FHyperlinkStyle Style;
 
 	UFUNCTION(BlueprintNativeEvent)
-	void ClickFun();
+	void ClickFun(const FString& ID);
 
 	URichInlineHyperlinkDecorator(const FObjectInitializer& ObjectInitializer);
 

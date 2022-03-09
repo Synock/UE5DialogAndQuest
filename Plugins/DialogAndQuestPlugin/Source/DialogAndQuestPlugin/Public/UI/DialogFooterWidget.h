@@ -16,7 +16,10 @@ class DIALOGANDQUESTPLUGIN_API UDialogFooterWidget : public UUserWidget
 	GENERATED_BODY()
 protected:
 
+	UPROPERTY(BlueprintReadOnly)
 	UDialogWindow* ParentDialog = nullptr;
+
+	UPROPERTY(BlueprintReadOnly)
 	const UDialogComponent* DialogComponent = nullptr;
 
 public:

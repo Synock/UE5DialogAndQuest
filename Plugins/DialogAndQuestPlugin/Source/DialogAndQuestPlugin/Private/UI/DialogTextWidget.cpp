@@ -15,6 +15,6 @@ void UDialogTextWidget::AddTopicText(int64 TopicID)
 	FDialogTextData TextData;
 	TextData.Id = Topic.Id;
 	TextData.TopicName = Topic.Topic;
-	TextData.TopicText = Topic.TopicText;
+	TextData.TopicText = DialogComponent->ParseTextHyperlink(Topic.TopicText);
 	AddTopicData(TextData);
 }

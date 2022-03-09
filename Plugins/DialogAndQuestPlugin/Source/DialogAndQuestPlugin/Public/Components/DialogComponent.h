@@ -30,6 +30,9 @@ protected:
 	TMap<int64, FDialogTopicStruct> DialogTopic;
 
 	UPROPERTY(BlueprintReadWrite)
+	TMap<FString, int64> DialogTopicLUT;
+
+	UPROPERTY(BlueprintReadWrite)
 	FString DialogName;
 
 public:
@@ -39,4 +42,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	const FDialogTopicStruct& GetDialogTopic(int64 ID) const;
+
+	UFUNCTION(BlueprintCallable)
+	int64 GetDialogTopicID(const FString& ID) const;
+
+	UFUNCTION(BlueprintCallable)
+	FString ParseTextHyperlink(const FString& OriginalString) const;
 };
