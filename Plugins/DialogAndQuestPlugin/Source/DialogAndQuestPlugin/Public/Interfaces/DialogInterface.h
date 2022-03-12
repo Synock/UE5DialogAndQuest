@@ -8,7 +8,7 @@
 #include "DialogInterface.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE()
+UINTERFACE(Blueprintable)
 class UDialogInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -24,9 +24,20 @@ class DIALOGANDQUESTPLUGIN_API IDialogInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	virtual int32 GetRelation() const = 0;
+
+	virtual float GetRelation() const = 0;
 
 	virtual UDialogComponent* GetDialogComponent() const = 0;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	float BP_GetRelation();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UDialogComponent* BP_GetDialogComponent();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	FString GetRelationString(float Relation) const;
+
 
 
 };

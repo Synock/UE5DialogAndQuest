@@ -16,7 +16,10 @@ class DIALOGANDQUESTPLUGIN_API UDialogHeaderWidget : public UUserWidget
 	GENERATED_BODY()
 protected:
 
+	UPROPERTY(BlueprintReadOnly)
 	UDialogWindow* ParentDialog = nullptr;
+
+	UPROPERTY(BlueprintReadOnly)
 	const UDialogComponent* DialogComponent = nullptr;
 
 public:
@@ -24,10 +27,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void InitDialog(UDialogWindow* InputParentDialog);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent)
 	void SetDialogName(const FString & Name);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent)
 	void SetRelationValue(float RelationFloat);
+
+	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent)
+	void SetRelationString(const FString & Name);
 
 };

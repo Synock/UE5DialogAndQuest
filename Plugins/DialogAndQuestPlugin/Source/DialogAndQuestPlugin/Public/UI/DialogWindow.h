@@ -35,12 +35,27 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	class UDialogTextWidget* TopicText = nullptr;
 
+	UPROPERTY(BlueprintReadWrite)
+	AActor* DialogActor = nullptr;
+
+	UPROPERTY(BlueprintReadWrite)
+	float RelationValue = 0.5f;
+
+	UPROPERTY(BlueprintReadWrite)
+	FString RelationString;
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void PostInitRelation();
+
 public:
 	UFUNCTION(BlueprintCallable)
 	const UDialogComponent* GetDialogComponent() const { return DialogComponent; }
 
 	UFUNCTION(BlueprintCallable)
-	void InitDialogWindow(UDialogComponent* InputDialogComponent);
+	const AActor* GetDialogActor() const { return DialogActor; }
+
+	UFUNCTION(BlueprintCallable)
+	void InitDialogWindow(UDialogComponent* InputDialogComponent, AActor* ActorDialog);
 
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
 	void InitDialogUI();
