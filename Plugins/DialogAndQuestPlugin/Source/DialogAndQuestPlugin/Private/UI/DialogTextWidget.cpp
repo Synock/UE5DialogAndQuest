@@ -3,6 +3,14 @@
 
 #include "UI/DialogTextWidget.h"
 
+void UDialogTextWidget::AddEmptyTopicData(const FString& DialogText)
+{
+	FDialogTextData TextData;
+	TextData.Id = 0;
+	TextData.TopicText = DialogText;
+	AddTopicData(TextData);
+}
+
 void UDialogTextWidget::InitDialog(UDialogWindow* InputParentDialog)
 {
 	ParentDialog = InputParentDialog;
@@ -15,6 +23,6 @@ void UDialogTextWidget::AddTopicText(int64 TopicID)
 	FDialogTextData TextData;
 	TextData.Id = Topic.Id;
 	TextData.TopicName = Topic.Topic;
-	TextData.TopicText = DialogComponent->ParseTextHyperlink(Topic.TopicText);
+	TextData.TopicText = DialogComponent->ParseTextHyperlink(Topic.TopicText, ParentDialog->GetDialogActor());
 	AddTopicData(TextData);
 }

@@ -34,6 +34,15 @@ void UDialogWindow::InitDialogWindow(UDialogComponent* InputDialogComponent, AAc
 	Header->SetRelationValue(RelationValue);
 	Header->SetRelationString(RelationString);
 
+	if(RelationValue >= DialogComponent->GetGreetingLimit())
+	{
+		TopicText->AddEmptyTopicData(DialogComponent->GetGoodGreeting());
+	}
+	else
+	{
+		TopicText->AddEmptyTopicData(DialogComponent->GetBadGreeting());
+	}
+
 }
 
 void UDialogWindow::DisplayDialogTopic(int64 ID)

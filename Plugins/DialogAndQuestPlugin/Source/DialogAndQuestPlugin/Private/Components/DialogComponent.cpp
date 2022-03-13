@@ -35,8 +35,6 @@ void UDialogComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-
 }
 
 void UDialogComponent::InitDialogFromID(int64 ID)
@@ -47,6 +45,10 @@ void UDialogComponent::InitDialogFromID(int64 ID)
 		{
 
 			FullDialog = GM->GetMainDialogComponent()->GetAllDialogTopicForMetaBundle(ID);
+
+			GoodGreeting = GM->GetMainDialogComponent()->GetGoodGreeting(ID);
+			BadGreeting = GM->GetMainDialogComponent()->GetBadGreeting(ID);
+			GreetingLimit = GM->GetMainDialogComponent()->GetGreetingRelationLimit(ID);
 		}
 		/*else
 		{
@@ -76,17 +78,15 @@ int64 UDialogComponent::GetDialogTopicID(const FString& ID) const
 	return 0;
 }
 
-FString UDialogComponent::ParseTextHyperlink(const FString& OriginalString) const
+FString UDialogComponent::ParseTextHyperlink(const FString& OriginalString, const AActor* DialogActor) const
 {
 	FString ActualOut;
 	TArray<FString> Out;
 	OriginalString.ParseIntoArray(Out,TEXT(" "),true);
 	for(const auto & Word : Out)
 	{
-		if(DialogTopicLUT.Contains(Word))
+		if(DialogTopicLUT.Contains(Word) && DialogTopic.Find(*DialogTopicLUT.Find(Word))->TopicCondition.VerifyCondition(DialogActor))
 		{
-			//"+ FString::FromInt(*DialogTopicLUT.Find(Word)) +"
-			//ActualOut += L"<DialogLink id=\"test\" >"+ Word + L"</> ";
 			ActualOut += L"<DialogLink id=\""+Word+"\">"+ Word + L"</> ";
 		}
 		else

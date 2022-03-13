@@ -54,10 +54,17 @@ void ADialogAndQuestGameModeBase::BeginPlay()
 	Topic5.TopicText ="Praesent rhoncus porta elit, a interdum arcu lacinia nec. Fusce placerat, neque in scelerisque faucibus, sapien ex feugiat turpis, vitae dignissim purus arcu eget metus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam vehicula tempus rutrum. Maecenas rutrum ullamcorper aliquet. Etiam id odio lacus. Sed non mi sit amet erat bibendum mollis ut ac justo. ";
 	DialogComponent->AddTopic(Topic5);
 
+	FDialogTopicStruct TopicSecret;
+	TopicSecret.Id = 6;
+	TopicSecret.TopicCondition.MinimumRelation = 0.65;
+	TopicSecret.Topic = "Secret";
+	TopicSecret.TopicText = "You can only read this secret topic because I like you";
+	DialogComponent->AddTopic(TopicSecret);
+
 	FDialogTopicBundleStruct Bundle;
 	Bundle.Id = 1;
 	Bundle.MetaName = "TestBundle";
-	Bundle.TopicList = {1,2,3,4,5};
+	Bundle.TopicList = {1,2,3,4,5,6};
 
 	FDialogTopicMetaBundleStruct MetaBundle;
 	MetaBundle.Id = 1;

@@ -55,12 +55,39 @@ TArray<FDialogTopicStruct> UDialogMainComponent::GetAllDialogTopicForBundle(int6
 TArray<FDialogTopicStruct> UDialogMainComponent::GetAllDialogTopicForMetaBundle(int64 BundleMetaId) const
 {
 	TArray<FDialogTopicStruct> Out;
-	if(DialogMetaBundle.Find(BundleMetaId))
+	if(const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
 	{
-		for(auto & ID : DialogMetaBundle[BundleMetaId].TopicBundleList)
+		for(auto & ID : MetaIterator->TopicBundleList)
 		{
 			Out.Append(GetAllDialogTopicForBundle(ID));
 		}
 	}
 	return Out;
+}
+
+FString UDialogMainComponent::GetBadGreeting(int64 BundleMetaId) const
+{
+	if(const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
+		return MetaIterator->BadGreetingDialog;
+
+	return "Error";
+}
+
+FString UDialogMainComponent::GetGoodGreeting(int64 BundleMetaId) const
+{
+
+		if(const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
+			return MetaIterator->GoodGreetingDialog;
+
+		return "Error";
+
+}
+
+float UDialogMainComponent::GetGreetingRelationLimit(int64 BundleMetaId) const
+{
+
+		if(const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
+			return MetaIterator->MinimumRelation;
+
+	return 0.f;
 }

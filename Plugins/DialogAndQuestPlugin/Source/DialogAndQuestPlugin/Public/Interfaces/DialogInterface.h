@@ -25,18 +25,12 @@ class DIALOGANDQUESTPLUGIN_API IDialogInterface
 public:
 
 
+	
 	virtual float GetRelation() const = 0;
 
 	virtual UDialogComponent* GetDialogComponent() const = 0;
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	float BP_GetRelation();
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	UDialogComponent* BP_GetDialogComponent();
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	FString GetRelationString(float Relation) const;
+	virtual FString GetRelationString(float Relation) const = 0;
 
 
 

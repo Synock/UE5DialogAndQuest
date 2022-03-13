@@ -51,4 +51,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<FDialogTopicStruct> GetAllDialogTopicForMetaBundle(int64 BundleMetaId) const;
 
+	UFUNCTION(BlueprintCallable)
+	FString GetBadGreeting(int64 BundleMetaId) const;
+
+	UFUNCTION(BlueprintCallable)
+    FString GetGoodGreeting(int64 BundleMetaId) const;
+
+	UFUNCTION(BlueprintCallable)
+	float GetGreetingRelationLimit(int64 BundleMetaId) const;
+
 };

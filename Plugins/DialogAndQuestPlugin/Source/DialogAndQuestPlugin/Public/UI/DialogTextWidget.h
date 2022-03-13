@@ -32,6 +32,9 @@ protected:
 public:
 
 	UFUNCTION(BlueprintCallable)
+	void AddEmptyTopicData(const FString& DialogText);
+
+	UFUNCTION(BlueprintCallable)
 	void InitDialog(UDialogWindow* InputParentDialog);
 
 	UFUNCTION(BlueprintCallable)

@@ -35,6 +35,16 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	FString DialogName;
 
+	UPROPERTY(BlueprintReadWrite)
+	FString GoodGreeting;
+
+	UPROPERTY(BlueprintReadWrite)
+	FString BadGreeting;
+
+	UPROPERTY(BlueprintReadWrite)
+	float GreetingLimit = 0.f;
+
+
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -47,5 +57,14 @@ public:
 	int64 GetDialogTopicID(const FString& ID) const;
 
 	UFUNCTION(BlueprintCallable)
-	FString ParseTextHyperlink(const FString& OriginalString) const;
+	FString ParseTextHyperlink(const FString& OriginalString, const AActor* DialogActor) const;
+
+	UFUNCTION(BlueprintCallable)
+	const FString & GetGoodGreeting() const {return GoodGreeting;}
+
+	UFUNCTION(BlueprintCallable)
+	const FString & GetBadGreeting() const {return BadGreeting;}
+
+	UFUNCTION(BlueprintCallable)
+	float GetGreetingLimit() const {return GreetingLimit;}
 };

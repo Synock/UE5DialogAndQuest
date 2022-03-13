@@ -7,7 +7,17 @@
 #include "DialogData.generated.h"
 
 
+USTRUCT(BlueprintType)
+struct FDialogTopicCondition
+{
+	GENERATED_BODY()
 
+	UPROPERTY(BlueprintReadWrite)
+	float MinimumRelation = 0.375f;
+
+	bool VerifyCondition(const AActor* DialogActor) const;
+	
+};
 
 USTRUCT(BlueprintType)
 struct FDialogTopicStruct
@@ -19,6 +29,9 @@ struct FDialogTopicStruct
 
 	UPROPERTY(BlueprintReadWrite)
 	FString Topic;
+
+	UPROPERTY(BlueprintReadWrite)
+	FDialogTopicCondition TopicCondition;
 
 	UPROPERTY(BlueprintReadWrite)
 	FString TopicText;
@@ -46,6 +59,15 @@ struct FDialogTopicMetaBundleStruct
 
 	UPROPERTY(BlueprintReadWrite)
 	int64 Id = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	FString GoodGreetingDialog = "Greetings";
+
+	UPROPERTY(BlueprintReadWrite)
+	FString BadGreetingDialog = "I don't wish to speak to your kind. Now get lost!";
+
+	UPROPERTY(BlueprintReadWrite)
+	float MinimumRelation = 0.375;
 
 	TArray<int64> TopicBundleList;
 
