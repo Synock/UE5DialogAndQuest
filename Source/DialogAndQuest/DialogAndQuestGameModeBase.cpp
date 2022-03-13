@@ -73,6 +73,27 @@ void ADialogAndQuestGameModeBase::BeginPlay()
 
 	DialogComponent->AddBundle(Bundle);
 	DialogComponent->AddMetaBundle(MetaBundle);
+
+
+	FDialogTopicStruct TopicQuest1;
+	TopicQuest1.Id = 7;
+	TopicQuest1.TopicCondition.MinimumRelation = 0.5;
+	TopicQuest1.Topic = "Quest1";
+	TopicQuest1.TopicText = "Yes yes, go talk to QuestGiver2 or something";
+	DialogComponent->AddTopic(TopicQuest1);
+
+	FDialogTopicBundleStruct Bundle2;
+	Bundle2.Id = 2;
+	Bundle2.MetaName = "TestBundle";
+	Bundle2.TopicList = {7};
+
+	FDialogTopicMetaBundleStruct MetaBundleQuest1;
+	MetaBundleQuest1.Id = 2;
+	MetaBundleQuest1.MetaName = "QuestBundle1";
+	MetaBundleQuest1.TopicBundleList = {1, 2};
+
+	DialogComponent->AddBundle(Bundle2);
+	DialogComponent->AddMetaBundle(MetaBundleQuest1);
 }
 
 ADialogAndQuestGameModeBase::ADialogAndQuestGameModeBase()
@@ -82,5 +103,7 @@ ADialogAndQuestGameModeBase::ADialogAndQuestGameModeBase()
 		DialogComponent = CreateDefaultSubobject<UDialogMainComponent>("DialogMainComponent");
 		//DialogComponent->SetNetAddressable();
 		//DialogComponent->SetIsReplicated(true);
+
+		QuestComponent = CreateDefaultSubobject<UQuestMainComponent>("QuestMainComponent");
 	}
 }

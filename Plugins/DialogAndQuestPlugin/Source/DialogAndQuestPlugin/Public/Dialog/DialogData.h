@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Quest/QuestData.h"
 #include "UObject/Object.h"
 #include "DialogData.generated.h"
 
@@ -35,6 +36,9 @@ struct FDialogTopicStruct
 
 	UPROPERTY(BlueprintReadWrite)
 	FString TopicText;
+
+	UPROPERTY(BlueprintReadWrite)
+	FQuestValidableSteps QuestRelation;
 };
 
 USTRUCT(BlueprintType)

@@ -22,12 +22,14 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Dialog")
 	TObjectPtr<UDialogMainComponent> DialogComponent;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Quest")
+	TObjectPtr<UQuestMainComponent> QuestComponent;
+
 public:
 
 	ADialogAndQuestGameModeBase();
 
-	//const UDialogMainComponent* GetMainDialogComponent() const {return DialogComponent;}
+	virtual UDialogMainComponent* GetMainDialogComponent() override {return DialogComponent;}
 
-	virtual UDialogMainComponent* GetMainDialogComponent() override {return DialogComponent;};
-	
+	virtual UQuestMainComponent* GetMainQuestComponent() override { return QuestComponent;}
 };
