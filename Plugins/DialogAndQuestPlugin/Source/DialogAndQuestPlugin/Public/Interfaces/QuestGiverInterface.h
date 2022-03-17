@@ -22,7 +22,6 @@ class DIALOGANDQUESTPLUGIN_API IQuestGiverInterface
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
-	public:
-
-	virtual UQuestGiverComponent* GetQuestGiverComponent() = 0;
+public:
+	virtual UQuestGiverComponent* GetQuestGiverComponent() const = 0;
 };

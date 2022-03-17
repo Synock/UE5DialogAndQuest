@@ -5,8 +5,12 @@
 
 AQuestAndDialogPlayerController::AQuestAndDialogPlayerController(const FObjectInitializer& ObjectInitializer)
 {
-	QuestBearerComponent = CreateDefaultSubobject<UQuestBearerComponent>(TEXT("QuestBearerComponent"));
-	QuestBearerComponent->SetIsReplicated(true);
+	if(HasAuthority())
+	{
+		QuestBearerComponent = CreateDefaultSubobject<UQuestBearerComponent>(TEXT("QuestBearerComponent"));
+		QuestBearerComponent->SetIsReplicated(true);
+		QuestBearerComponent->SetNetAddressable();
+	}
 }
 
 UQuestBearerComponent* AQuestAndDialogPlayerController::GetQuestBearerComponent()

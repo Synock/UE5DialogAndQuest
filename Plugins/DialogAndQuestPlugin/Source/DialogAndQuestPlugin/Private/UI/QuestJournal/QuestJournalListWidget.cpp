@@ -10,16 +10,16 @@ void UQuestJournalListWidget::InitDialog(UQuestJournalWindow* InputParentDialog)
 	QuestBearerComponent = InputParentDialog->GetQuestComponent();
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UQuestJournalListWidget::UpdateQuestList()
 {
 	ClearList();
-
-
+	check(QuestBearerComponent);
+	check(ParentJournal);
 	for (auto& QuestData : QuestBearerComponent->GetAllKnownQuest())
 	{
 		if (!QuestData.Finished)
-		{
 			AddQuestTitleData(QuestData);
-		}
 	}
 }

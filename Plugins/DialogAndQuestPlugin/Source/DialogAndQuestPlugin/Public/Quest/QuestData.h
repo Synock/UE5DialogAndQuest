@@ -40,7 +40,6 @@ struct FQuestMetaData
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<FQuestStep> Steps;
-
 };
 
 USTRUCT(BlueprintType)
@@ -53,7 +52,6 @@ struct FQuestValidableSteps
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<int32> Steps;
-
 };
 
 USTRUCT(BlueprintType)
@@ -81,9 +79,9 @@ struct FQuestProgressData
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<FQuestStep> PreviousStep;
-
 };
 
+///global quest Data
 UCLASS(BlueprintType)
 class DIALOGANDQUESTPLUGIN_API UQuestJournalData : public UObject
 {
@@ -95,4 +93,21 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	class UQuestJournalWindow* Parent = nullptr;
+};
+
+///quest Step entry
+UCLASS(BlueprintType)
+class DIALOGANDQUESTPLUGIN_API UQuestEntryData : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite)
+	FQuestStep Data;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool Finished;
+
+	UPROPERTY(BlueprintReadWrite)
+	UQuestJournalWindow* Parent = nullptr;
 };

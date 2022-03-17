@@ -31,19 +31,20 @@ protected:
 	UFUNCTION()
 	void OnRep_KnownQuest();
 
-	UFUNCTION(Server,Reliable,WithValidation)
-	void Server_UpdateQuest(int64 QuestID, int32 QuestStep);
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_UpdateQuest(int64 QuestID, int32 QuestStep, AActor* QuestGiver);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateQuest(int64 QuestID, int32 QuestStep, AActor* QuestGiver);
 
 public:
-
 	const TArray<FQuestProgressData>& GetAllKnownQuest() const { return KnownQuestData; }
+
+	const FQuestProgressData& GetKnownQuest(int64 QuestID) const;
 
 	UPROPERTY(BlueprintAssignable) //this is public because its a dispatcher
 	FKnownQuestChanged KnownQuestDispatcher;
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateQuest(int64 QuestID, int32 QuestStep);
-
-	UFUNCTION(BlueprintCallable)
-    void TryValidateQuestFromActor(int64 QuestID, AActor* QuestGiver);
+	void TryValidateQuestFromActor(int64 QuestID, AActor* QuestGiver);
 };

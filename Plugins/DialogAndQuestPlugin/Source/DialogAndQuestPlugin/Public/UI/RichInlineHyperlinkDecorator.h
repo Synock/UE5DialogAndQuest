@@ -15,9 +15,7 @@ class DIALOGANDQUESTPLUGIN_API URichInlineHyperlinkDecorator : public URichTextB
 	GENERATED_BODY()
 
 protected :
-
 public:
-
 	UPROPERTY(EditAnywhere, Category=Appearance)
 	FHyperlinkStyle Style;
 

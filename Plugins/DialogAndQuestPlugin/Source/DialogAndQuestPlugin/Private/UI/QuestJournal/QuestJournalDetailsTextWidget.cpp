@@ -6,9 +6,8 @@
 void UQuestJournalDetailsTextWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);
-	UQuestJournalData* Data = Cast<UQuestJournalData>(ListItemObject);
 
-	if (Data)
+	if (const UQuestEntryData* Data = Cast<UQuestEntryData>(ListItemObject))
 	{
 		LocalData = Data->Data;
 		ParentJournal = Data->Parent;

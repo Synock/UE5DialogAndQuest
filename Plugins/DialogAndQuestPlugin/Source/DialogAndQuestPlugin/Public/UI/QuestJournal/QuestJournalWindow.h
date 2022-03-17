@@ -36,4 +36,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void InitJournal();
+
+	UFUNCTION(BlueprintCallable)
+	void DisplayQuest(int64 ID);
 };

@@ -13,6 +13,8 @@ UDialogMainComponent::UDialogMainComponent()
 }
 
 
+//----------------------------------------------------------------------------------------------------------------------
+
 // Called when the game starts
 void UDialogMainComponent::BeginPlay()
 {
@@ -21,30 +23,38 @@ void UDialogMainComponent::BeginPlay()
 	// ...
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UDialogMainComponent::AddTopic(const FDialogTopicStruct& NewTopic)
 {
 	DialogTopic.Add(NewTopic.Id, NewTopic);
 	DialogTopicLUT.Add(NewTopic.Topic, NewTopic.Id);
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UDialogMainComponent::AddBundle(const FDialogTopicBundleStruct& Bundle)
 {
-	DialogBundle.Add(Bundle.Id ,Bundle);
+	DialogBundle.Add(Bundle.Id, Bundle);
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 void UDialogMainComponent::AddMetaBundle(const FDialogTopicMetaBundleStruct& MetaBundle)
 {
 	DialogMetaBundle.Add(MetaBundle.Id, MetaBundle);
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 TArray<FDialogTopicStruct> UDialogMainComponent::GetAllDialogTopicForBundle(int64 BundleId) const
 {
 	TArray<FDialogTopicStruct> Out;
-	if(DialogBundle.Contains(BundleId))
+	if (DialogBundle.Contains(BundleId))
 	{
-		for(auto & ID : DialogBundle[BundleId].TopicList)
+		for (auto& ID : DialogBundle[BundleId].TopicList)
 		{
-			if(DialogTopic.Find(ID))
+			if (DialogTopic.Find(ID))
 				Out.Add(DialogTopic[ID]);
 		}
 	}
@@ -52,12 +62,14 @@ TArray<FDialogTopicStruct> UDialogMainComponent::GetAllDialogTopicForBundle(int6
 	return Out;
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 TArray<FDialogTopicStruct> UDialogMainComponent::GetAllDialogTopicForMetaBundle(int64 BundleMetaId) const
 {
 	TArray<FDialogTopicStruct> Out;
-	if(const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
+	if (const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
 	{
-		for(auto & ID : MetaIterator->TopicBundleList)
+		for (auto& ID : MetaIterator->TopicBundleList)
 		{
 			Out.Append(GetAllDialogTopicForBundle(ID));
 		}
@@ -65,29 +77,32 @@ TArray<FDialogTopicStruct> UDialogMainComponent::GetAllDialogTopicForMetaBundle(
 	return Out;
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 FString UDialogMainComponent::GetBadGreeting(int64 BundleMetaId) const
 {
-	if(const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
+	if (const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
 		return MetaIterator->BadGreetingDialog;
 
 	return "Error";
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 FString UDialogMainComponent::GetGoodGreeting(int64 BundleMetaId) const
 {
+	if (const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
+		return MetaIterator->GoodGreetingDialog;
 
-		if(const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
-			return MetaIterator->GoodGreetingDialog;
-
-		return "Error";
-
+	return "Error";
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 float UDialogMainComponent::GetGreetingRelationLimit(int64 BundleMetaId) const
 {
-
-		if(const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
-			return MetaIterator->MinimumRelation;
+	if (const auto MetaIterator = DialogMetaBundle.Find(BundleMetaId))
+		return MetaIterator->MinimumRelation;
 
 	return 0.f;
 }

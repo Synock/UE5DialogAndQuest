@@ -16,7 +16,6 @@ class DIALOGANDQUESTPLUGIN_API UDialogTextWidget : public UUserWidget
 {
 	GENERATED_BODY()
 protected:
-
 	UPROPERTY(BlueprintReadOnly)
 	UDialogWindow* ParentDialog = nullptr;
 
@@ -30,7 +29,6 @@ protected:
 	void ClearList();
 
 public:
-
 	UFUNCTION(BlueprintCallable)
 	void AddEmptyTopicData(const FString& DialogText);
 
@@ -39,6 +37,4 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void AddTopicText(int64 TopicID);
-
-
 };

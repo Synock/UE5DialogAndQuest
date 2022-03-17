@@ -8,7 +8,7 @@
 #include "DialogActor.generated.h"
 
 UCLASS()
-class DIALOGANDQUEST_API ADialogActor : public AActor, public  IDialogInterface
+class DIALOGANDQUEST_API ADialogActor : public AActor, public IDialogInterface
 {
 	GENERATED_BODY()
 
@@ -24,10 +24,13 @@ protected:
 	float BP_GetRelation() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	UDialogComponent* BP_GetDialogComponent() const;
+	FString BP_GetRelationString(float Relation) const;
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	FString BP_GetRelationString(float Relation) const;
+	UDialogComponent* BP_GetDialogComponent() const;
+
+	UPROPERTY(Replicated, BlueprintReadWrite)
+	TObjectPtr<UDialogComponent> Dialog;
 
 public:
 	// Called every frame
@@ -38,4 +41,6 @@ public:
 	virtual UDialogComponent* GetDialogComponent() const override;
 
 	virtual FString GetRelationString(float Relation) const override;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

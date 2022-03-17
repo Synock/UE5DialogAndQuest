@@ -23,6 +23,5 @@ class DIALOGANDQUESTPLUGIN_API IQuestBearerInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-
 	virtual UQuestBearerComponent* GetQuestBearerComponent() = 0;
 };

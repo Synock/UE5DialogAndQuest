@@ -75,11 +75,28 @@ void ADialogAndQuestGameModeBase::BeginPlay()
 	DialogComponent->AddMetaBundle(MetaBundle);
 
 
+
+
+	FQuestMetaData QuestData1;
+	QuestData1.Repeatable = false;
+	QuestData1.QuestTitle = "Test Quest 1";
+	QuestData1.QuestID = 1;
+
+	FQuestStep Step1;
+	Step1.StepTitle = "Find QuestGiver 2";
+	Step1.StepDescription = "I am supposed to find QuestGiver2 and talk to him, or something.";
+	Step1.QuestSubID = 0;
+	QuestData1.Steps.Add(Step1);
+
+	QuestComponent->AddQuest(QuestData1);
+
 	FDialogTopicStruct TopicQuest1;
 	TopicQuest1.Id = 7;
 	TopicQuest1.TopicCondition.MinimumRelation = 0.5;
 	TopicQuest1.Topic = "Quest1";
 	TopicQuest1.TopicText = "Yes yes, go talk to QuestGiver2 or something";
+	TopicQuest1.QuestRelation.QuestID = 1;
+	TopicQuest1.QuestRelation.Steps.Add(0);
 	DialogComponent->AddTopic(TopicQuest1);
 
 	FDialogTopicBundleStruct Bundle2;

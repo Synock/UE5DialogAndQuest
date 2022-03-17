@@ -55,9 +55,8 @@ public:
 	FString GetBadGreeting(int64 BundleMetaId) const;
 
 	UFUNCTION(BlueprintCallable)
-    FString GetGoodGreeting(int64 BundleMetaId) const;
+	FString GetGoodGreeting(int64 BundleMetaId) const;
 
 	UFUNCTION(BlueprintCallable)
 	float GetGreetingRelationLimit(int64 BundleMetaId) const;
-
 };

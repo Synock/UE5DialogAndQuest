@@ -58,6 +58,5 @@ protected:
 	UDialogWindow* ParentDialog = nullptr;
 
 public:
-
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 };

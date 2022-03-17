@@ -26,9 +26,7 @@ protected:
 	TMap<int64, FQuestMetaData> QuestList;
 
 public:
-
 	void AddQuest(const FQuestMetaData& QuestData);
 
 	const FQuestMetaData& GetQuestData(int64 QuestID) const;
-
 };

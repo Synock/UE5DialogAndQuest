@@ -10,14 +10,23 @@ void UQuestJournalWindow::UpdateKnownQuest()
 	ListWidget->UpdateQuestList();
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UQuestJournalWindow::InitJournal()
 {
-
-	IQuestBearerInterface* QuestBearer = Cast<IQuestBearerInterface>(GetOwningLocalPlayer());
-
-	if(QuestBearer)
+	if(IQuestBearerInterface* QuestBearer = Cast<IQuestBearerInterface>(GetOwningPlayer()))
 	{
 		QuestComponent = QuestBearer->GetQuestBearerComponent();
 		QuestComponent->KnownQuestDispatcher.AddDynamic(this, &UQuestJournalWindow::UpdateKnownQuest);
 	}
+
+	ListWidget->InitDialog(this);
+	DetailsWidget->InitDialog(this);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void UQuestJournalWindow::DisplayQuest(int64 ID)
+{
+	DetailsWidget->DisplayQuestData(ID);
 }

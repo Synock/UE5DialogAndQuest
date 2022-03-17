@@ -14,6 +14,7 @@ UQuestGiverComponent::UQuestGiverComponent()
 	// ...
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 
 // Called when the game starts
 void UQuestGiverComponent::BeginPlay()
@@ -21,17 +22,32 @@ void UQuestGiverComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void UQuestGiverComponent::AddValidableSteps(int64 QuestID, TArray<int32> Steps)
+{
+	FQuestValidableSteps localData;
+	localData.QuestID = QuestID;
+	localData.Steps = Steps;
+
+	ValidableSteps.Add(QuestID,std::move(localData));
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 
 bool UQuestGiverComponent::CanValidateQuestStep(int64 QuestID, int32 CurrentQuestStep)
 {
-	if(!ValidableSteps.Contains(QuestID))
+	const ENetRole localRole = GetOwnerRole();
+	if(localRole != ROLE_Authority)
 		return false;
 
-	if(ValidableSteps.FindChecked(QuestID).Steps.Contains(CurrentQuestStep))
+	if (!ValidableSteps.Contains(QuestID))
+		return false;
+
+	if (ValidableSteps.FindChecked(QuestID).Steps.Contains(CurrentQuestStep))
 		return true;
 
 	return false;
 }
-

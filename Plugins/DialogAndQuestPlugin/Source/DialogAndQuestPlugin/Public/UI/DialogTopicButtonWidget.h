@@ -19,7 +19,6 @@ class DIALOGANDQUESTPLUGIN_API UDialogTopicButtonWidget : public UUserWidget, pu
 	GENERATED_BODY()
 
 protected:
-
 	UPROPERTY(BlueprintReadOnly)
 	UDialogWindow* ParentDialog = nullptr;
 
@@ -28,11 +27,10 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-		void InitData(const FDialogTextData& ItemData);
+	void InitData(const FDialogTextData& ItemData);
 
 	UFUNCTION(BlueprintCallable)
 	void InitParent(UDialogWindow* Parent);
 
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
-	
 };

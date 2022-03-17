@@ -3,6 +3,7 @@
 
 #include "Components/QuestBearerComponent.h"
 
+#include "Interfaces/DialogGameModeInterface.h"
 #include "Interfaces/QuestGiverInterface.h"
 #include "Net/UnrealNetwork.h"
 
@@ -34,9 +35,9 @@ void UQuestBearerComponent::OnRep_KnownQuest()
 	KnownQuestDispatcher.Broadcast();
 
 	int32 LocalID = 0;
-	for(auto& QuestData : KnownQuestData)
+	for (const auto& QuestData : KnownQuestData)
 	{
-		if(!KnownQuestDataLUT.Contains(QuestData.QuestID))
+		if (!KnownQuestDataLUT.Contains(QuestData.QuestID))
 			KnownQuestDataLUT.Add(QuestData.QuestID, LocalID);
 		else
 		{
@@ -46,57 +47,90 @@ void UQuestBearerComponent::OnRep_KnownQuest()
 	}
 }
 
-void UQuestBearerComponent::Server_UpdateQuest_Implementation(int64 QuestID, int32 QuestStep)
+//----------------------------------------------------------------------------------------------------------------------
+
+void UQuestBearerComponent::Server_UpdateQuest_Implementation(int64 QuestID, int32 QuestStep, AActor* QuestGiver)
 {
-	if(KnownQuestDataLUT.Contains(QuestID))
+	if (const IQuestGiverInterface* GiverInterface = Cast<IQuestGiverInterface>(QuestGiver))
 	{
-		KnownQuestData[KnownQuestDataLUT[QuestID]].ProgressID = QuestStep;
-	}
-	else if(!KnownQuestDataLUT.Contains(QuestID) && QuestStep == 1)
-	{
-		//add the correct step
+		if (GiverInterface->GetQuestGiverComponent()->CanValidateQuestStep(QuestID, QuestStep))
+		{
+			if (QuestStep == 0 && !KnownQuestDataLUT.Contains(QuestID))
+			{
+				IDialogGameModeInterface* IDialogInterface = Cast<IDialogGameModeInterface>(
+					GetWorld()->GetAuthGameMode());
+
+				check(IDialogInterface);
+
+				FQuestMetaData QuestData = IDialogInterface->GetMainQuestComponent()->GetQuestData(QuestID);
+				FQuestProgressData NewQuestData;
+				NewQuestData.Repeatable = QuestData.Repeatable;
+				NewQuestData.QuestTitle = QuestData.QuestTitle;
+				NewQuestData.QuestID = QuestData.QuestID;
+				NewQuestData.ProgressID = 0;
+				NewQuestData.CurrentStep = QuestData.Steps[0];
+				KnownQuestData.Add(std::move(NewQuestData));
+
+				KnownQuestDataLUT.Add(QuestData.QuestID, KnownQuestData.Num() - 1);
+			}
+			else
+			{
+				KnownQuestData[KnownQuestDataLUT[QuestID]].ProgressID = QuestStep;
+			}
+		}
 	}
 
 
 	OnRep_KnownQuest();
 }
 
-bool UQuestBearerComponent::Server_UpdateQuest_Validate(int64 QuestID, int32 QuestStep)
+//----------------------------------------------------------------------------------------------------------------------
+
+bool UQuestBearerComponent::Server_UpdateQuest_Validate(int64 QuestID, int32 QuestStep, AActor* QuestGiver)
 {
+	IQuestGiverInterface* GiverInterface = Cast<IQuestGiverInterface>(QuestGiver);
+
+	if (!GiverInterface)
+		return false;
+
+	if (!GiverInterface->GetQuestGiverComponent())
+		return false;
+
+	if (!GiverInterface->GetQuestGiverComponent()->CanValidateQuestStep(QuestID, QuestStep))
+		return false;
+
 	return true;
 }
 
-void UQuestBearerComponent::UpdateQuest(int64 QuestID, int32 QuestStep)
+//----------------------------------------------------------------------------------------------------------------------
+
+void UQuestBearerComponent::UpdateQuest(int64 QuestID, int32 QuestStep, AActor* QuestGiver)
 {
-	Server_UpdateQuest_Validate(QuestID,QuestStep);
+	Server_UpdateQuest(QuestID, QuestStep, QuestGiver);
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+const FQuestProgressData& UQuestBearerComponent::GetKnownQuest(int64 QuestID) const
+{
+	return KnownQuestData[KnownQuestDataLUT.FindChecked(QuestID)];
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 
 void UQuestBearerComponent::TryValidateQuestFromActor(int64 QuestID, AActor* QuestGiver)
 {
 	int32 CurrentStep = 0;
-	if(KnownQuestDataLUT.Contains(QuestID))
+	if (KnownQuestDataLUT.Contains(QuestID))
 	{
 		CurrentStep = KnownQuestData[KnownQuestDataLUT[QuestID]].ProgressID;
 	}
 
-	IQuestGiverInterface* GiverInterface = Cast<IQuestGiverInterface>(QuestGiver);
+	if (IQuestGiverInterface* GiverInterface = Cast<IQuestGiverInterface>(QuestGiver); !GiverInterface)
+		return;
 
-	if(GiverInterface)
-	{
-		if(GiverInterface->GetQuestGiverComponent()->CanValidateQuestStep(QuestID, CurrentStep))
-		{
-			if(CurrentStep == 0)
-			{
-				KnownQuestData[KnownQuestDataLUT[QuestID]].ProgressID = 10;
-				//KnownQuestData.Add()
-				//TODO RESTART FROM HERE
-			}
-			else
-			{
-				KnownQuestData[KnownQuestDataLUT[QuestID]].ProgressID = CurrentStep + 10;
-			}
-		}
-	}
+	//if (GiverInterface->GetQuestGiverComponent()->CanValidateQuestStep(QuestID, CurrentStep))
+	UpdateQuest(QuestID, CurrentStep, QuestGiver);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

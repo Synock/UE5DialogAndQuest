@@ -17,20 +17,18 @@ class DIALOGANDQUESTPLUGIN_API UQuestJournalDetailsTextWidget : public UUserWidg
 	GENERATED_BODY()
 
 protected:
-
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	void InitData(const FQuestProgressData& ItemData);
+	void InitData(const FQuestStep& ItemData);
 
 	UPROPERTY(BlueprintReadOnly)
 	int64 ItemID = 0;
 
 	UPROPERTY(BlueprintReadOnly)
-	FQuestProgressData LocalData;
+	FQuestStep LocalData;
 
 	UPROPERTY(BlueprintReadOnly)
 	UQuestJournalWindow* ParentJournal = nullptr;
 
 public:
-
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 };

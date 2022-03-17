@@ -14,6 +14,7 @@ UQuestMainComponent::UQuestMainComponent()
 	// ...
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 
 // Called when the game starts
 void UQuestMainComponent::BeginPlay()
@@ -21,16 +22,19 @@ void UQuestMainComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 void UQuestMainComponent::AddQuest(const FQuestMetaData& QuestData)
 {
-	if(GetOwnerRole() != ROLE_Authority)
+	if (GetOwnerRole() != ROLE_Authority)
 		return;
 
 	QuestList.Add(QuestData.QuestID, QuestData);
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 const FQuestMetaData& UQuestMainComponent::GetQuestData(int64 QuestID) const
 {

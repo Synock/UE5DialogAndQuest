@@ -7,9 +7,7 @@
 
 bool FDialogTopicCondition::VerifyCondition(const AActor* DialogActor) const
 {
-	const IDialogInterface* DialogInterfaceActor = Cast<IDialogInterface>(DialogActor);
-
-	if(DialogInterfaceActor)
+	if (const IDialogInterface* DialogInterfaceActor = Cast<IDialogInterface>(DialogActor))
 		return DialogInterfaceActor->GetRelation() >= MinimumRelation;
 
 	return false;

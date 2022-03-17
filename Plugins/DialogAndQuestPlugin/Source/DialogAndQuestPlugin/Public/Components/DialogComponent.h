@@ -17,36 +17,43 @@ public:
 	// Sets default values for this component's properties
 	UDialogComponent();
 
-	FString GetDialogName() const {return DialogName;}
+	UFUNCTION(BlueprintCallable)
+	FString GetDialogName() const { return DialogName; }
 
-	TArray<FDialogTopicStruct> GetAllDialogTopic() const;
+	UFUNCTION(BlueprintCallable)
+	TArray<FDialogTopicStruct> GetAllDialogTopic() const { return DialogTopicData; }
 
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadWrite)
+
+	UPROPERTY(ReplicatedUsing=OnRep_DialogData, BlueprintReadOnly)
+	TArray<FDialogTopicStruct> DialogTopicData;
+
+	UPROPERTY(BlueprintReadOnly)
 	TMap<int64, FDialogTopicStruct> DialogTopic;
 
 	UPROPERTY(BlueprintReadWrite)
 	TMap<FString, int64> DialogTopicLUT;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(Replicated, BlueprintReadWrite)
 	FString DialogName;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(Replicated, BlueprintReadOnly)
 	FString GoodGreeting;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(Replicated, BlueprintReadOnly)
 	FString BadGreeting;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(Replicated, BlueprintReadWrite)
 	float GreetingLimit = 0.f;
 
+	UFUNCTION()
+	virtual void OnRep_DialogData();
 
 public:
-
 	UFUNCTION(BlueprintCallable)
 	void InitDialogFromID(int64 ID);
 
@@ -60,11 +67,11 @@ public:
 	FString ParseTextHyperlink(const FString& OriginalString, const AActor* DialogActor) const;
 
 	UFUNCTION(BlueprintCallable)
-	const FString & GetGoodGreeting() const {return GoodGreeting;}
+	const FString& GetGoodGreeting() const { return GoodGreeting; }
 
 	UFUNCTION(BlueprintCallable)
-	const FString & GetBadGreeting() const {return BadGreeting;}
+	const FString& GetBadGreeting() const { return BadGreeting; }
 
 	UFUNCTION(BlueprintCallable)
-	float GetGreetingLimit() const {return GreetingLimit;}
+	float GetGreetingLimit() const { return GreetingLimit; }
 };

@@ -19,7 +19,6 @@ class DIALOGANDQUESTPLUGIN_API UDialogWindow : public UUserWidget
 	GENERATED_BODY()
 
 protected:
-
 	UPROPERTY(BlueprintReadWrite)
 	UDialogComponent* DialogComponent = nullptr;
 
@@ -57,11 +56,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void InitDialogWindow(UDialogComponent* InputDialogComponent, AActor* ActorDialog);
 
-	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void InitDialogUI();
 
 	UFUNCTION(BlueprintCallable)
 	void DisplayDialogTopic(int64 ID);
+
+	UFUNCTION(BlueprintCallable)
+	void DisplayJournalUpdate();
 
 	UFUNCTION(BlueprintCallable)
 	void DisplayDialogTopicFromString(const FString& ID);
@@ -72,3 +74,4 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnExitEvent OnExit;
 };
+

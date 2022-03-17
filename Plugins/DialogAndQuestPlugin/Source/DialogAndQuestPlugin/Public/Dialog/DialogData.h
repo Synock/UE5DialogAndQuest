@@ -17,7 +17,6 @@ struct FDialogTopicCondition
 	float MinimumRelation = 0.375f;
 
 	bool VerifyCondition(const AActor* DialogActor) const;
-	
 };
 
 USTRUCT(BlueprintType)
@@ -53,7 +52,6 @@ struct FDialogTopicBundleStruct
 
 	UPROPERTY(BlueprintReadWrite)
 	FString MetaName;
-
 };
 
 USTRUCT(BlueprintType)
@@ -77,7 +75,6 @@ struct FDialogTopicMetaBundleStruct
 
 	UPROPERTY(BlueprintReadWrite)
 	FString MetaName;
-
 };
 
 /**

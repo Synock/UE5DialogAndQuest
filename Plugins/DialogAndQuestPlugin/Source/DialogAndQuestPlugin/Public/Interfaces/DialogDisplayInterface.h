@@ -23,7 +23,6 @@ class DIALOGANDQUESTPLUGIN_API IDialogDisplayInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void TriggerDialogOption(const FString& DialogTopic);
 

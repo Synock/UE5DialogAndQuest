@@ -11,10 +11,10 @@ class FRichInlineHyperlinkDecorator : public FRichTextDecorator
 {
 protected:
 	virtual TSharedPtr<SWidget> CreateDecoratorWidget(const FTextRunInfo& RunInfo,
-													  const FTextBlockStyle& TextStyle) const override;
+	                                                  const FTextBlockStyle& TextStyle) const override;
 	FHyperlinkStyle LinkStyle;
 	FSimpleDelegate Delegate;
-	mutable TMap<FString,FSimpleDelegate> RetardedTest;
+	mutable TMap<FString, FSimpleDelegate> RetardedTest;
 	URichInlineHyperlinkDecorator* LocalDecorator;
 
 public:
@@ -40,7 +40,7 @@ bool FRichInlineHyperlinkDecorator::Supports(const FTextRunParseResults& RunPars
 {
 	if (RunParseResult.Name == TEXT("DialogLink"))
 	{
-		if(RunParseResult.MetaData.Contains(TEXT("id")))
+		if (RunParseResult.MetaData.Contains(TEXT("id")))
 		{
 			const FTextRange& IdRange = RunParseResult.MetaData[TEXT("id")];
 			FString IDString = Text.Mid(IdRange.BeginIndex, IdRange.EndIndex - IdRange.BeginIndex);
@@ -61,9 +61,9 @@ TSharedPtr<SWidget> FRichInlineHyperlinkDecorator::CreateDecoratorWidget(
 {
 	TSharedPtr<FSlateHyperlinkRun::FWidgetViewModel> Model = MakeShareable(new FSlateHyperlinkRun::FWidgetViewModel);
 	TSharedPtr<SRichTextHyperlink> Link;
-	if(RetardedTest.Contains(RunInfo.Content.ToString()))
+	if (RetardedTest.Contains(RunInfo.Content.ToString()))
 	{
-		 Link = SNew(SRichTextHyperlink, Model.ToSharedRef())
+		Link = SNew(SRichTextHyperlink, Model.ToSharedRef())
 		   .Text(RunInfo.Content)
 		   .Style(&LinkStyle)
 		   .OnNavigate(*RetardedTest.Find(RunInfo.Content.ToString()));
@@ -95,6 +95,5 @@ void URichInlineHyperlinkDecorator::ClickFun_Implementation(const FString& ID)
 
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 
-	IDialogDisplayInterface::Execute_TriggerDialogOption(PlayerController,ID);
-
+	IDialogDisplayInterface::Execute_TriggerDialogOption(PlayerController, ID);
 }

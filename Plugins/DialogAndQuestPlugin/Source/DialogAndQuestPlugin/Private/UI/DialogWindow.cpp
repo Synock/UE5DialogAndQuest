@@ -13,8 +13,24 @@
 
 void UDialogWindow::InitDialogWindow(UDialogComponent* InputDialogComponent, AActor* ActorDialog)
 {
-	DialogComponent = InputDialogComponent;
+	check(InputDialogComponent);
+
 	DialogActor = ActorDialog;
+
+
+	IDialogInterface* DialogActorInterface = Cast<IDialogInterface>(DialogActor);
+	if (DialogActor && DialogActorInterface)
+	{
+		RelationValue = DialogActorInterface->GetRelation();
+		RelationString = DialogActorInterface->GetRelationString(RelationValue);
+		DialogComponent = DialogActorInterface->GetDialogComponent();
+	}
+	else
+	{
+		DialogComponent = InputDialogComponent;
+		PostInitRelation();
+	}
+
 
 	InitDialogUI();
 	Footer->InitDialog(this);
@@ -22,26 +38,27 @@ void UDialogWindow::InitDialogWindow(UDialogComponent* InputDialogComponent, AAc
 	TopicText->InitDialog(this);
 	TopicList->InitDialog(this);
 
-	IDialogInterface* DialogActorInterface = Cast<IDialogInterface>(DialogActor);
-	if(DialogActor && DialogActorInterface)
-	{
-		RelationValue = DialogActorInterface->GetRelation();
-		RelationString = DialogActorInterface->GetRelationString(RelationValue);
-	}
-	else
-	{
-		PostInitRelation();
-	}
-
 	Header->SetRelationValue(RelationValue);
 	Header->SetRelationString(RelationString);
 
-	if(RelationValue >= DialogComponent->GetGreetingLimit())
+	if (RelationValue >= DialogComponent->GetGreetingLimit())
 		TopicText->AddEmptyTopicData(DialogComponent->GetGoodGreeting());
 	else
 		TopicText->AddEmptyTopicData(DialogComponent->GetBadGreeting());
 
 
+	IQuestBearerInterface* BearerInterface = Cast<IQuestBearerInterface>(GetOwningPlayer());
+
+	if (BearerInterface)
+	{
+		BearerInterface->GetQuestBearerComponent()->KnownQuestDispatcher.AddDynamic(
+			this, &UDialogWindow::DisplayJournalUpdate);
+	}
+}
+
+void UDialogWindow::DisplayJournalUpdate()
+{
+	TopicText->AddEmptyTopicData("<Italic>Your quest journal has been updated.</>");
 }
 
 void UDialogWindow::DisplayDialogTopic(int64 ID)
@@ -51,17 +68,18 @@ void UDialogWindow::DisplayDialogTopic(int64 ID)
 
 	IQuestGiverInterface* GiverInterface = Cast<IQuestGiverInterface>(DialogActor);
 
-	if(GiverInterface)
+	if (GiverInterface)
 	{
 		const FDialogTopicStruct& Topic = DialogComponent->GetDialogTopic(ID);
 
 		IQuestBearerInterface* BearerInterface = Cast<IQuestBearerInterface>(GetOwningPlayer());
 
-		if(BearerInterface)
+		if (BearerInterface)
 		{
-			if(Topic.QuestRelation.QuestID != 0)
+			if (Topic.QuestRelation.QuestID != 0)
 			{
-
+				BearerInterface->GetQuestBearerComponent()->TryValidateQuestFromActor(
+					Topic.QuestRelation.QuestID, DialogActor);
 			}
 		}
 	}
@@ -74,6 +92,10 @@ void UDialogWindow::DisplayDialogTopicFromString(const FString& ID)
 
 void UDialogWindow::CloseWindow()
 {
+	IQuestBearerInterface* BearerInterface = Cast<IQuestBearerInterface>(GetOwningPlayer());
+
+	if (BearerInterface)
+		BearerInterface->GetQuestBearerComponent()->KnownQuestDispatcher.RemoveAll(this);
+
 	RemoveFromParent();
 }
-

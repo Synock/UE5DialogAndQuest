@@ -15,12 +15,10 @@ class DIALOGANDQUESTPLUGIN_API UDialogGiveWidget : public UUserWidget
 {
 	GENERATED_BODY()
 protected:
-
 	UDialogWindow* ParentDialog = nullptr;
 	const UDialogComponent* DialogComponent = nullptr;
 
 public:
-
 	UFUNCTION(BlueprintCallable)
 	void InitDialog(UDialogWindow* InputParentDialog);
 };
