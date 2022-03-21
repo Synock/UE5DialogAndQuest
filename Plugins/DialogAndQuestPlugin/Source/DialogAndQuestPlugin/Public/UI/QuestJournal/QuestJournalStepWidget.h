@@ -6,13 +6,13 @@
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Blueprint/UserWidget.h"
 #include "Quest/QuestData.h"
-#include "QuestJournalDetailsTextWidget.generated.h"
+#include "QuestJournalStepWidget.generated.h"
 
 /**
  *
  */
 UCLASS()
-class DIALOGANDQUESTPLUGIN_API UQuestJournalDetailsTextWidget : public UUserWidget, public IUserObjectListEntry
+class DIALOGANDQUESTPLUGIN_API UQuestJournalStepWidget : public UUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
 

@@ -14,7 +14,7 @@ void UQuestJournalButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObjec
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);
 
-	if (const UQuestJournalData* Data = Cast<UQuestJournalData>(ListItemObject))
+	if (const UQuestJournalTitleData* Data = Cast<UQuestJournalTitleData>(ListItemObject))
 	{
 		LocalData = Data->Data;
 		ParentJournal = Data->Parent;

@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "QuestData.generated.h"
 
+///represent a quest objective, eg, go to the bakery, talk to somebody, bring 10 wolf fang
 USTRUCT(BlueprintType)
 struct FQuestStep
 {
@@ -24,6 +25,7 @@ struct FQuestStep
 	FString StepDescription;
 };
 
+/// This is a complete quest
 USTRUCT(BlueprintType)
 struct FQuestMetaData
 {
@@ -42,6 +44,7 @@ struct FQuestMetaData
 	TArray<FQuestStep> Steps;
 };
 
+///This is a list of objectives that can be validated
 USTRUCT(BlueprintType)
 struct FQuestValidableSteps
 {
@@ -54,6 +57,8 @@ struct FQuestValidableSteps
 	TArray<int32> Steps;
 };
 
+
+///This is a quest from the player perspective
 USTRUCT(BlueprintType)
 struct FQuestProgressData
 {
@@ -77,13 +82,14 @@ struct FQuestProgressData
 	UPROPERTY(BlueprintReadOnly)
 	FString QuestTitle;
 
+	///steps already done by the player
 	UPROPERTY(BlueprintReadOnly)
 	TArray<FQuestStep> PreviousStep;
 };
 
-///global quest Data
+///Global quest Data
 UCLASS(BlueprintType)
-class DIALOGANDQUESTPLUGIN_API UQuestJournalData : public UObject
+class DIALOGANDQUESTPLUGIN_API UQuestJournalTitleData : public UObject
 {
 	GENERATED_BODY()
 

@@ -1,9 +1,9 @@
 // Copyright 2022 Maximilien (Synock) Guislain
 
 
-#include "UI/QuestJournal/QuestJournalDetailsTextWidget.h"
+#include "UI/QuestJournal/QuestJournalStepWidget.h"
 
-void UQuestJournalDetailsTextWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
+void UQuestJournalStepWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);
 
