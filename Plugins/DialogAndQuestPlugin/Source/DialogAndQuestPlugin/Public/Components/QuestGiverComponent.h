@@ -33,4 +33,6 @@ protected:
 public:
 
 	bool CanValidateQuestStep(int64 QuestID, int32 CurrentQuestStep);
+
+	const TMap<int64, FQuestValidableSteps>& GetValidableQuestSteps() const {return ValidableSteps;}
 };

@@ -77,40 +77,112 @@ void ADialogAndQuestGameModeBase::BeginPlay()
 
 
 
-	FQuestMetaData QuestData1;
-	QuestData1.Repeatable = false;
-	QuestData1.QuestTitle = "Test Quest 1";
-	QuestData1.QuestID = 1;
+	{
+		FQuestMetaData QuestData1;
+		QuestData1.Repeatable = false;
+		QuestData1.QuestTitle = "Test Quest 1";
+		QuestData1.QuestID = 1;
 
-	FQuestStep Step1;
-	Step1.StepTitle = "Find QuestGiver 2";
-	Step1.StepDescription = "I am supposed to find QuestGiver2 and talk to him, or something.";
-	Step1.QuestSubID = 0;
-	QuestData1.Steps.Add(Step1);
+		FQuestStep Step1;
+		Step1.StepTitle = "Find QuestGiver 2";
+		Step1.StepDescription = "I am supposed to find QuestGiver2 and talk to him, or something.";
+		Step1.QuestSubID = 0;
+		QuestData1.Steps.Add(Step1);
 
-	QuestComponent->AddQuest(QuestData1);
+		FQuestStep Step2;
+		Step2.StepTitle = "Find QuestGiver 1, again";
+		Step2.StepDescription = "I am supposed to go back to QuestGiver 1 and talk to him, again.";
+		Step2.QuestSubID = 10;
+		QuestData1.Steps.Add(Step2);
 
-	FDialogTopicStruct TopicQuest1;
-	TopicQuest1.Id = 7;
-	TopicQuest1.TopicCondition.MinimumRelation = 0.5;
-	TopicQuest1.Topic = "Quest1";
-	TopicQuest1.TopicText = "Yes yes, go talk to QuestGiver2 or something";
-	TopicQuest1.QuestRelation.QuestID = 1;
-	TopicQuest1.QuestRelation.Steps.Add(0);
-	DialogComponent->AddTopic(TopicQuest1);
+		FQuestStep Step3;
+		Step3.StepTitle = "Quest Finished";
+		Step3.StepDescription = "This quest is now finished or something";
+		Step3.QuestSubID = 20;
+		QuestData1.Steps.Add(Step3);
 
-	FDialogTopicBundleStruct Bundle2;
-	Bundle2.Id = 2;
-	Bundle2.MetaName = "TestBundle";
-	Bundle2.TopicList = {7};
+		QuestComponent->AddQuest(QuestData1);
 
-	FDialogTopicMetaBundleStruct MetaBundleQuest1;
-	MetaBundleQuest1.Id = 2;
-	MetaBundleQuest1.MetaName = "QuestBundle1";
-	MetaBundleQuest1.TopicBundleList = {1, 2};
+		FDialogTopicStruct TopicQuest1;
+		TopicQuest1.Id = 7;
+		TopicQuest1.TopicCondition.MinimumRelation = 0.5;
+		TopicQuest1.Topic = "Quest1";
+		TopicQuest1.TopicText = "Yes yes, go talk to QuestGiver2 or something";
+		TopicQuest1.QuestRelation.QuestID = 1;
+		TopicQuest1.QuestRelation.Steps.Add(0);
+		TopicQuest1.QuestRelation.Steps.Add(20);
+		DialogComponent->AddTopic(TopicQuest1);
 
-	DialogComponent->AddBundle(Bundle2);
-	DialogComponent->AddMetaBundle(MetaBundleQuest1);
+		FDialogTopicStruct TopicQuest2;
+		TopicQuest2.Id = 8;
+		TopicQuest2.TopicCondition.MinimumRelation = 0.5;
+		TopicQuest2.Topic = "Quest 1 Step 2";
+		TopicQuest2.TopicText = "Ah yes, please tell QuestGiver1 to eat a bag of chips";
+		TopicQuest2.QuestRelation.QuestID = 1;
+		TopicQuest2.QuestRelation.Steps.Add(10);
+
+		FDialogTopicCondition Cond;
+		Cond.QuestId = 1;
+		Cond.MinimumStepID = 0;
+		TopicQuest2.TopicCondition = Cond;
+		DialogComponent->AddTopic(TopicQuest2);
+
+		FDialogTopicBundleStruct Bundle2;
+		Bundle2.Id = 2;
+		Bundle2.MetaName = "TestBundle";
+		Bundle2.TopicList = {7};
+
+		FDialogTopicBundleStruct Bundle3;
+		Bundle3.Id = 3;
+		Bundle3.MetaName = "TestBundle2";
+		Bundle3.TopicList = {8};
+
+		FDialogTopicMetaBundleStruct MetaBundleQuest1;
+		MetaBundleQuest1.Id = 2;
+		MetaBundleQuest1.MetaName = "QuestBundle1";
+		MetaBundleQuest1.TopicBundleList = {1, 2};
+
+		FDialogTopicMetaBundleStruct MetaBundleQuest2;
+		MetaBundleQuest2.Id = 3;
+		MetaBundleQuest2.MetaName = "QuestBundle2";
+		MetaBundleQuest2.TopicBundleList = {1, 3};
+
+		DialogComponent->AddBundle(Bundle2);
+		DialogComponent->AddMetaBundle(MetaBundleQuest1);
+		DialogComponent->AddBundle(Bundle3);
+		DialogComponent->AddMetaBundle(MetaBundleQuest2);
+	}
+
+
+
+	{
+		FQuestMetaData QuestData2;
+		QuestData2.Repeatable = false;
+		QuestData2.QuestTitle = "Journey Quest";
+		QuestData2.QuestID = 2;
+
+		FQuestStep Step1;
+		Step1.StepTitle = "Explore High Mountains";
+		Step1.StepDescription = "I am supposed to climb a high mountain, sort of.";
+		Step1.QuestSubID = 0;
+		QuestData2.Steps.Add(Step1);
+
+		FQuestStep Step2;
+		Step2.StepTitle = "Explore Deep Caves";
+		Step2.StepDescription = "I am supposed to explore a deep cave.";
+		Step2.QuestSubID = 10;
+		QuestData2.Steps.Add(Step2);
+
+		FQuestStep Step3;
+		Step3.StepTitle = "Explore Great Flat";
+		Step3.StepDescription = "What is this now, a running simulator?";
+		Step3.QuestSubID = 20;
+		QuestData2.Steps.Add(Step3);
+
+		QuestComponent->AddQuest(QuestData2);
+	}
+
+
 }
 
 ADialogAndQuestGameModeBase::ADialogAndQuestGameModeBase()

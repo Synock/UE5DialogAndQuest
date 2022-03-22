@@ -13,9 +13,10 @@ void UDialogTopicWidget::InitDialog(UDialogWindow* InputParentDialog)
 void UDialogTopicWidget::UpdateTopicData()
 {
 	ClearList();
+
 	for (auto& Topic : DialogComponent->GetAllDialogTopic())
 	{
-		if (Topic.TopicCondition.VerifyCondition(ParentDialog->GetDialogActor()))
+		if (Topic.TopicCondition.VerifyCondition(ParentDialog->GetDialogActor(),GetOwningPlayer()))
 		{
 			FDialogTextData TextData;
 			TextData.Id = Topic.Id;

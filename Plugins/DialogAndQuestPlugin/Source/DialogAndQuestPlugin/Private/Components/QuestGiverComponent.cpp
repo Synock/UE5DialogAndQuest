@@ -28,11 +28,11 @@ void UQuestGiverComponent::BeginPlay()
 
 void UQuestGiverComponent::AddValidableSteps(int64 QuestID, TArray<int32> Steps)
 {
-	FQuestValidableSteps localData;
-	localData.QuestID = QuestID;
-	localData.Steps = Steps;
+	FQuestValidableSteps LocalData;
+	LocalData.QuestID = QuestID;
+	LocalData.Steps = Steps;
 
-	ValidableSteps.Add(QuestID,std::move(localData));
+	ValidableSteps.Add(QuestID,std::move(LocalData));
 }
 
 //----------------------------------------------------------------------------------------------------------------------

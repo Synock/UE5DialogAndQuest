@@ -17,3 +17,8 @@ UQuestBearerComponent* AQuestAndDialogPlayerController::GetQuestBearerComponent(
 {
 	return QuestBearerComponent;
 }
+
+const UQuestBearerComponent* AQuestAndDialogPlayerController::GetQuestBearerComponentConst() const
+{
+	return QuestBearerComponent;
+}

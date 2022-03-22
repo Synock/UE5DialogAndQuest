@@ -9,14 +9,20 @@
 
 
 USTRUCT(BlueprintType)
-struct FDialogTopicCondition
+struct DIALOGANDQUESTPLUGIN_API FDialogTopicCondition
 {
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite)
+	int64 QuestId = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	int32 MinimumStepID = 0;
+
+	UPROPERTY(BlueprintReadWrite)
 	float MinimumRelation = 0.375f;
 
-	bool VerifyCondition(const AActor* DialogActor) const;
+	bool VerifyCondition(const AActor* DialogActor, const APlayerController* Controller) const;
 };
 
 USTRUCT(BlueprintType)

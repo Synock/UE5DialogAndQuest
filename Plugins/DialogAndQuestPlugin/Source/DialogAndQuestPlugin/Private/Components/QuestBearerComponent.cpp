@@ -5,6 +5,7 @@
 
 #include "Interfaces/DialogGameModeInterface.h"
 #include "Interfaces/QuestGiverInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -49,63 +50,12 @@ void UQuestBearerComponent::OnRep_KnownQuest()
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void UQuestBearerComponent::Server_UpdateQuest_Implementation(int64 QuestID, int32 QuestStep, AActor* QuestGiver)
+bool UQuestBearerComponent::Server_TryProgressAll_Validate(AActor* Validator)
 {
-	if (const IQuestGiverInterface* GiverInterface = Cast<IQuestGiverInterface>(QuestGiver))
-	{
-		if (GiverInterface->GetQuestGiverComponent()->CanValidateQuestStep(QuestID, QuestStep))
-		{
-			if (QuestStep == 0 && !KnownQuestDataLUT.Contains(QuestID))
-			{
-				IDialogGameModeInterface* IDialogInterface = Cast<IDialogGameModeInterface>(
-					GetWorld()->GetAuthGameMode());
-
-				check(IDialogInterface);
-
-				FQuestMetaData QuestData = IDialogInterface->GetMainQuestComponent()->GetQuestData(QuestID);
-				FQuestProgressData NewQuestData;
-				NewQuestData.Repeatable = QuestData.Repeatable;
-				NewQuestData.QuestTitle = QuestData.QuestTitle;
-				NewQuestData.QuestID = QuestData.QuestID;
-				NewQuestData.ProgressID = 0;
-				NewQuestData.CurrentStep = {QuestData.Steps[0], false};
-				KnownQuestData.Add(std::move(NewQuestData));
-
-				KnownQuestDataLUT.Add(QuestData.QuestID, KnownQuestData.Num() - 1);
-			}
-			else if (auto& QData = KnownQuestData[KnownQuestDataLUT[QuestID]]; QuestStep != QData.ProgressID)
-			{
-				QData.CurrentStep.Completed = true;
-				QData.PreviousStep.Add(std::move(QData.CurrentStep));
-				QData.ProgressID = QuestStep;
-
-				IDialogGameModeInterface* IDialogInterface = Cast<IDialogGameModeInterface>(
-					GetWorld()->GetAuthGameMode());
-				check(IDialogInterface);
-				FQuestMetaData QuestCompleteData = IDialogInterface->GetMainQuestComponent()->GetQuestData(QuestID);
-
-				QData.CurrentStep = {QuestCompleteData.Steps[QuestStep], false};
-			}
-		}
-	}
-
-
-	OnRep_KnownQuest();
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-bool UQuestBearerComponent::Server_UpdateQuest_Validate(int64 QuestID, int32 QuestStep, AActor* QuestGiver)
-{
-	IQuestGiverInterface* GiverInterface = Cast<IQuestGiverInterface>(QuestGiver);
-
-	if (!GiverInterface)
+	if (!Validator)
 		return false;
 
-	if (!GiverInterface->GetQuestGiverComponent())
-		return false;
-
-	if (!GiverInterface->GetQuestGiverComponent()->CanValidateQuestStep(QuestID, QuestStep))
+	if (!Cast<IQuestGiverInterface>(Validator))
 		return false;
 
 	return true;
@@ -113,9 +63,79 @@ bool UQuestBearerComponent::Server_UpdateQuest_Validate(int64 QuestID, int32 Que
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void UQuestBearerComponent::UpdateQuest(int64 QuestID, int32 QuestStep, AActor* QuestGiver)
+void UQuestBearerComponent::Server_TryProgressAll_Implementation(AActor* Validator)
 {
-	Server_UpdateQuest(QuestID, QuestStep, QuestGiver);
+	IQuestGiverInterface* ValiatorGiver = Cast<IQuestGiverInterface>(Validator);
+
+	for (auto& Data :
+	     ValiatorGiver->GetQuestGiverComponent()->GetValidableQuestSteps())
+	{
+		Server_TryProgressQuest(Data.Key, Validator);
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void UQuestBearerComponent::ProgressQuest(const FQuestMetaData& QuestMeta, const FQuestStep& NextQuestStep)
+{
+	if (GetOwnerRole() != ROLE_Authority)
+		return;
+
+	if (auto& QData = KnownQuestData[KnownQuestDataLUT[QuestMeta.QuestID]]; NextQuestStep.QuestSubID != QData.
+		ProgressID)
+	{
+		QData.CurrentStep.Completed = true;
+		QData.PreviousStep.Add(std::move(QData.CurrentStep));
+		QData.ProgressID = NextQuestStep.QuestSubID;
+
+
+		FQuestProgressStep NewStepProgress;
+		NewStepProgress.Completed = false;
+		NewStepProgress.StepDescription = NextQuestStep.StepDescription;
+		NewStepProgress.StepTitle = NextQuestStep.StepTitle;
+		NewStepProgress.QuestID = NextQuestStep.QuestID;
+		NewStepProgress.QuestSubID = NextQuestStep.QuestSubID;
+		QData.CurrentStep = std::move(NewStepProgress);
+	}
+
+
+	OnRep_KnownQuest();
+}
+
+void UQuestBearerComponent::AddQuest(const FQuestMetaData& QuestMeta)
+{
+	const ENetRole LocalRole = GetOwnerRole();
+	if (LocalRole == ROLE_Authority)
+	{
+		if (!KnownQuestDataLUT.Contains(QuestMeta.QuestID))
+		{
+			FQuestProgressData NewQuestData;
+			NewQuestData.Repeatable = QuestMeta.Repeatable;
+			NewQuestData.QuestTitle = QuestMeta.QuestTitle;
+			NewQuestData.QuestID = QuestMeta.QuestID;
+			NewQuestData.ProgressID = 0;
+			NewQuestData.CurrentStep = {QuestMeta.Steps[0], false};
+			KnownQuestData.Add(std::move(NewQuestData));
+
+			KnownQuestDataLUT.Add(QuestMeta.QuestID, KnownQuestData.Num() - 1);
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void UQuestBearerComponent::Server_TryProgressQuest_Implementation(int64 QuestID, AActor* Validator)
+{
+	IDialogGameModeInterface* GM = Cast<IDialogGameModeInterface>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (GM)
+		GM->TryProgressQuest(QuestID, Cast<APlayerController>(GetOwner()), Validator);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool UQuestBearerComponent::Server_TryProgressQuest_Validate(int64 QuestID, AActor* Validator)
+{
+	return true;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -127,19 +147,98 @@ const FQuestProgressData& UQuestBearerComponent::GetKnownQuest(int64 QuestID) co
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void UQuestBearerComponent::TryValidateQuestFromActor(int64 QuestID, AActor* QuestGiver)
+bool UQuestBearerComponent::IsQuestKnown(int64 QuestID) const
 {
-	int32 CurrentStep = 0;
-	if (KnownQuestDataLUT.Contains(QuestID))
+	return KnownQuestDataLUT.Contains(QuestID);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool UQuestBearerComponent::CanDisplay(int64 QuestID, int32 StepID) const
+{
+	if (!IsQuestKnown(QuestID))
+		return false;
+
+	return IsAtStep(QuestID, StepID);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool UQuestBearerComponent::CanValidate(int64 QuestID, int32 StepID) const
+{
+	if (StepID == 0)
+		return !IsQuestKnown(QuestID);
+
+	if (!IsQuestKnown(QuestID))
+		return false;
+
+	if (IsPastStep(QuestID, StepID))
+		return false;
+
+	return true;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool UQuestBearerComponent::IsPastStep(int64 QuestID, int32 StepID) const
+{
+	return GetKnownQuest(QuestID).ProgressID > StepID;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool UQuestBearerComponent::IsAtOrPastStep(int64 QuestID, int32 StepID) const
+{
+	return GetKnownQuest(QuestID).ProgressID >= StepID;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool UQuestBearerComponent::IsAtStep(int64 QuestID, int32 StepID) const
+{
+	return GetKnownQuest(QuestID).ProgressID == StepID;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void UQuestBearerComponent::AuthorityAddQuest(int64 QuestID)
+{
+	const ENetRole LocalRole = GetOwnerRole();
+	if (LocalRole == ROLE_Authority)
 	{
-		CurrentStep = KnownQuestData[KnownQuestDataLUT[QuestID]].ProgressID;
+		if (!KnownQuestDataLUT.Contains(QuestID))
+		{
+			IDialogGameModeInterface* IDialogInterface = Cast<IDialogGameModeInterface>(
+				GetWorld()->GetAuthGameMode());
+
+			check(IDialogInterface);
+
+			FQuestMetaData QuestData = IDialogInterface->GetMainQuestComponent()->GetQuestData(QuestID);
+			FQuestProgressData NewQuestData;
+			NewQuestData.Repeatable = QuestData.Repeatable;
+			NewQuestData.QuestTitle = QuestData.QuestTitle;
+			NewQuestData.QuestID = QuestData.QuestID;
+			NewQuestData.ProgressID = 0;
+			NewQuestData.CurrentStep = {QuestData.Steps[0], false};
+			KnownQuestData.Add(std::move(NewQuestData));
+
+			KnownQuestDataLUT.Add(QuestData.QuestID, KnownQuestData.Num() - 1);
+		}
 	}
+}
 
-	if (IQuestGiverInterface* GiverInterface = Cast<IQuestGiverInterface>(QuestGiver); !GiverInterface)
-		return;
+//----------------------------------------------------------------------------------------------------------------------
 
-	//if (GiverInterface->GetQuestGiverComponent()->CanValidateQuestStep(QuestID, CurrentStep))
-	UpdateQuest(QuestID, CurrentStep, QuestGiver);
+void UQuestBearerComponent::TryProgressQuest(int64 QuestID, AActor* Validator)
+{
+	Server_TryProgressQuest(QuestID, Validator);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void UQuestBearerComponent::TryProgressAll(AActor* Validator)
+{
+	Server_TryProgressAll(Validator);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

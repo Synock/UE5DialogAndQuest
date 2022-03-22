@@ -78,8 +78,12 @@ void UDialogWindow::DisplayDialogTopic(int64 ID)
 		{
 			if (Topic.QuestRelation.QuestID != 0)
 			{
-				BearerInterface->GetQuestBearerComponent()->TryValidateQuestFromActor(
-					Topic.QuestRelation.QuestID, DialogActor);
+				for(auto & StepData : Topic.QuestRelation.Steps)
+				{
+					if(BearerInterface->CanValidate(Topic.QuestRelation.QuestID,StepData))
+						BearerInterface->TryProgressQuest(
+						   Topic.QuestRelation.QuestID, DialogActor);
+				}
 			}
 		}
 	}

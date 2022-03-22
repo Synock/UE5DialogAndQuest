@@ -87,10 +87,11 @@ FString UDialogComponent::ParseTextHyperlink(const FString& OriginalString, cons
 	FString ActualOut;
 	TArray<FString> Out;
 	OriginalString.ParseIntoArray(Out,TEXT(" "), true);
+	APlayerController* Controller = Cast<APlayerController>(GetOwner());
 	for (const auto& Word : Out)
 	{
 		if (DialogTopicLUT.Contains(Word) && DialogTopic.Find(*DialogTopicLUT.Find(Word))->TopicCondition.
-		                                                 VerifyCondition(DialogActor))
+		                                                 VerifyCondition(DialogActor, Controller))
 		{
 			ActualOut += L"<DialogLink id=\"" + Word + "\">" + Word + L"</> ";
 		}

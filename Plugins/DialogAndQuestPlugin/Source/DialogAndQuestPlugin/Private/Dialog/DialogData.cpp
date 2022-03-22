@@ -4,11 +4,31 @@
 #include "Dialog/DialogData.h"
 
 #include "Interfaces/DialogInterface.h"
+#include "Interfaces/QuestBearerInterface.h"
+#include "Interfaces/QuestGiverInterface.h"
 
-bool FDialogTopicCondition::VerifyCondition(const AActor* DialogActor) const
+bool FDialogTopicCondition::VerifyCondition(const AActor* DialogActor, const APlayerController* Controller) const
 {
-	if (const IDialogInterface* DialogInterfaceActor = Cast<IDialogInterface>(DialogActor))
-		return DialogInterfaceActor->GetRelation() >= MinimumRelation;
+	bool StandardReturn = false;
+	if (const IDialogInterface* DialogInterfaceActor = Cast<IDialogInterface>(DialogActor); DialogInterfaceActor)
+		StandardReturn =  DialogInterfaceActor->GetRelation() >= MinimumRelation;
 
-	return false;
+	if(QuestId != 0)
+	{
+		if(const IQuestBearerInterface* QuestBearer = Cast<IQuestBearerInterface>(Controller); QuestBearer)
+		{
+			if (const IQuestGiverInterface* QuestActor = Cast<IQuestGiverInterface>(DialogActor); QuestActor)
+			{
+				bool QuestCondition = QuestBearer->CanDisplay(QuestId, MinimumStepID);
+
+				return QuestCondition && StandardReturn;
+			}
+		}
+
+		return false;
+
+	}
+
+	return StandardReturn;
 }
+

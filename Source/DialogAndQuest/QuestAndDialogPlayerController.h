@@ -25,4 +25,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual UQuestBearerComponent* GetQuestBearerComponent() override;
+
+	UFUNCTION(BlueprintCallable)
+	virtual const UQuestBearerComponent* GetQuestBearerComponentConst() const override;
 };
