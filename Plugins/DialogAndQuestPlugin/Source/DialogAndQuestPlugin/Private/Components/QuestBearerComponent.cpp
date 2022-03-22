@@ -68,14 +68,23 @@ void UQuestBearerComponent::Server_UpdateQuest_Implementation(int64 QuestID, int
 				NewQuestData.QuestTitle = QuestData.QuestTitle;
 				NewQuestData.QuestID = QuestData.QuestID;
 				NewQuestData.ProgressID = 0;
-				NewQuestData.CurrentStep = QuestData.Steps[0];
+				NewQuestData.CurrentStep = {QuestData.Steps[0], false};
 				KnownQuestData.Add(std::move(NewQuestData));
 
 				KnownQuestDataLUT.Add(QuestData.QuestID, KnownQuestData.Num() - 1);
 			}
-			else
+			else if (auto& QData = KnownQuestData[KnownQuestDataLUT[QuestID]]; QuestStep != QData.ProgressID)
 			{
-				KnownQuestData[KnownQuestDataLUT[QuestID]].ProgressID = QuestStep;
+				QData.CurrentStep.Completed = true;
+				QData.PreviousStep.Add(std::move(QData.CurrentStep));
+				QData.ProgressID = QuestStep;
+
+				IDialogGameModeInterface* IDialogInterface = Cast<IDialogGameModeInterface>(
+					GetWorld()->GetAuthGameMode());
+				check(IDialogInterface);
+				FQuestMetaData QuestCompleteData = IDialogInterface->GetMainQuestComponent()->GetQuestData(QuestID);
+
+				QData.CurrentStep = {QuestCompleteData.Steps[QuestStep], false};
 			}
 		}
 	}

@@ -25,7 +25,7 @@ struct FQuestStep
 	FString StepDescription;
 };
 
-/// This is a complete quest
+/// This is a complete quest info
 USTRUCT(BlueprintType)
 struct FQuestMetaData
 {
@@ -42,6 +42,7 @@ struct FQuestMetaData
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<FQuestStep> Steps;
+
 };
 
 ///This is a list of objectives that can be validated
@@ -57,6 +58,15 @@ struct FQuestValidableSteps
 	TArray<int32> Steps;
 };
 
+///represent a quest objective, eg, go to the bakery, talk to somebody, bring 10 wolf fang and its completion state
+USTRUCT(BlueprintType)
+struct FQuestProgressStep : public FQuestStep
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly)
+	bool Completed = false;
+};
 
 ///This is a quest from the player perspective
 USTRUCT(BlueprintType)
@@ -77,15 +87,16 @@ struct FQuestProgressData
 	bool Repeatable = false;
 
 	UPROPERTY(BlueprintReadOnly)
-	FQuestStep CurrentStep;
+	FQuestProgressStep CurrentStep;
 
 	UPROPERTY(BlueprintReadOnly)
 	FString QuestTitle;
 
 	///steps already done by the player
 	UPROPERTY(BlueprintReadOnly)
-	TArray<FQuestStep> PreviousStep;
+	TArray<FQuestProgressStep> PreviousStep;
 };
+
 
 ///Global quest Data
 UCLASS(BlueprintType)
@@ -109,10 +120,7 @@ class DIALOGANDQUESTPLUGIN_API UQuestEntryData : public UObject
 
 public:
 	UPROPERTY(BlueprintReadWrite)
-	FQuestStep Data;
-
-	UPROPERTY(BlueprintReadWrite)
-	bool Finished;
+	FQuestProgressStep Data;
 
 	UPROPERTY(BlueprintReadWrite)
 	UQuestJournalWindow* Parent = nullptr;

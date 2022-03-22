@@ -14,3 +14,8 @@ void UQuestJournalStepWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 		InitData(Data->Data);
 	}
 }
+
+FString UQuestJournalStepWidget::GetStrike(const FString& OriginalString)
+{
+	return "<Strike>"+OriginalString+"</>";
+}
