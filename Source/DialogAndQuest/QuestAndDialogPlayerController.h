@@ -16,11 +16,9 @@ class DIALOGANDQUEST_API AQuestAndDialogPlayerController : public APlayerControl
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	UQuestBearerComponent*  QuestBearerComponent= nullptr;
-
+	UQuestBearerComponent* QuestBearerComponent = nullptr;
 
 public:
-
 	AQuestAndDialogPlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	UFUNCTION(BlueprintCallable)

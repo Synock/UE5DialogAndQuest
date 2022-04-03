@@ -19,7 +19,7 @@ AAreaQuestValidator::AAreaQuestValidator(): AActor()
 	{
 		QuestComponent = CreateDefaultSubobject<UQuestGiverComponent>("QuestComponent");
 		QuestComponent->SetIsReplicated(false); // Enable replication by default
-		
+
 		BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
 		BoxComponent->SetBoxExtent(FVector(200.f, 200.f, 200.f));
 		BoxComponent->bDynamicObstacle = true;
@@ -27,7 +27,7 @@ AAreaQuestValidator::AAreaQuestValidator(): AActor()
 		BoxComponent->SetGenerateOverlapEvents(true);
 		BoxComponent->SetIsReplicated(false);
 		SetRootComponent(BoxComponent);
-		
+
 		OnActorBeginOverlap.AddDynamic(this, &AAreaQuestValidator::OnOverlapBegin);
 		OnActorEndOverlap.AddDynamic(this, &AAreaQuestValidator::OnOverlapEnd);
 	}
@@ -43,24 +43,25 @@ void AAreaQuestValidator::BeginPlay()
 
 void AAreaQuestValidator::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)
 {
+	UDialogAndQuestPluginHelper::Log(
+		"Overlap begin between " + OverlappedActor->GetName() + " and " + OtherActor->GetName());
+	APawn* ActorAsPawn = Cast<APawn>(OtherActor);
+	if (!ActorAsPawn)
+		return;
 
-	UDialogAndQuestPluginHelper::Log("Overlap begin between " + OverlappedActor->GetName() + " and " + OtherActor->GetName());
-		APawn* ActorAsPawn = Cast<APawn>(OtherActor);
-		if (!ActorAsPawn)
-			return;
+	APlayerController* PlayerController = Cast<APlayerController>(ActorAsPawn->GetController());
+	if (!PlayerController)
+		return;
 
-		APlayerController* PlayerController = Cast<APlayerController>(ActorAsPawn->GetController());
-		if (!PlayerController)
-			return;
-
-		IQuestBearerInterface* QuestBearerInterface = Cast<IQuestBearerInterface>(PlayerController);
-		if(!QuestBearerInterface)
-			return;
+	IQuestBearerInterface* QuestBearerInterface = Cast<IQuestBearerInterface>(PlayerController);
+	if (!QuestBearerInterface)
+		return;
 
 	QuestBearerInterface->TryProgressAll(this);
 }
 
 void AAreaQuestValidator::OnOverlapEnd(AActor* OverlappedActor, AActor* OtherActor)
 {
-	UDialogAndQuestPluginHelper::Log("Overlap end between " + OverlappedActor->GetName() + " and " + OtherActor->GetName());
+	UDialogAndQuestPluginHelper::Log(
+		"Overlap end between " + OverlappedActor->GetName() + " and " + OtherActor->GetName());
 }

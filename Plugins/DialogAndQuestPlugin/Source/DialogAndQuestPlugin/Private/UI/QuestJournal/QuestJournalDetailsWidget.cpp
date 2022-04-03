@@ -11,6 +11,8 @@ void UQuestJournalDetailsWidget::InitDialog(UQuestJournalWindow* InputParentDial
 	QuestBearerComponent = InputParentDialog->GetQuestComponent();
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UQuestJournalDetailsWidget::DisplayQuestData(int64 QuestID)
 {
 	ClearData();

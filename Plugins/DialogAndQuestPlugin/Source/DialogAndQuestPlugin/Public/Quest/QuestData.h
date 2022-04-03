@@ -6,7 +6,7 @@
 #include "UObject/Object.h"
 #include "QuestData.generated.h"
 
-///represent a quest objective, eg, go to the bakery, talk to somebody, bring 10 wolf fang
+///@brief Represent a quest objective, eg, go to the bakery, talk to somebody, bring 10 wolf fang
 USTRUCT(BlueprintType)
 struct FQuestStep
 {
@@ -23,9 +23,12 @@ struct FQuestStep
 
 	UPROPERTY(BlueprintReadOnly)
 	FString StepDescription;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool FinishingStep = false;
 };
 
-/// This is a complete quest info
+///@brief Represent the complete quest info
 USTRUCT(BlueprintType)
 struct FQuestMetaData
 {
@@ -42,12 +45,11 @@ struct FQuestMetaData
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<FQuestStep> Steps;
-
 };
 
-///This is a list of objectives that can be validated
+///@brief This is a list of objectives that can be validated by a quest giver
 USTRUCT(BlueprintType)
-struct FQuestValidableSteps
+struct FQuestValidatableSteps
 {
 	GENERATED_BODY()
 
@@ -58,7 +60,7 @@ struct FQuestValidableSteps
 	TArray<int32> Steps;
 };
 
-///represent a quest objective, eg, go to the bakery, talk to somebody, bring 10 wolf fang and its completion state
+///@brief Represent a quest objective, eg, go to the bakery, talk to somebody, bring 10 wolf fang and its completion state
 USTRUCT(BlueprintType)
 struct FQuestProgressStep : public FQuestStep
 {
@@ -68,7 +70,7 @@ struct FQuestProgressStep : public FQuestStep
 	bool Completed = false;
 };
 
-///This is a quest from the player perspective
+///@brief This is a quest from the player perspective with information on completion
 USTRUCT(BlueprintType)
 struct FQuestProgressData
 {
@@ -98,7 +100,7 @@ struct FQuestProgressData
 };
 
 
-///Global quest Data
+///@brief Global quest data
 UCLASS(BlueprintType)
 class DIALOGANDQUESTPLUGIN_API UQuestJournalTitleData : public UObject
 {
@@ -112,7 +114,7 @@ public:
 	class UQuestJournalWindow* Parent = nullptr;
 };
 
-///quest Step entry
+///@brief Quest step entry
 UCLASS(BlueprintType)
 class DIALOGANDQUESTPLUGIN_API UQuestEntryData : public UObject
 {

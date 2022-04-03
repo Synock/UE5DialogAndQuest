@@ -3,4 +3,4 @@
 #include "DialogAndQuest.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, DialogAndQuest, "DialogAndQuest" );
+IMPLEMENT_PRIMARY_GAME_MODULE(FDefaultGameModuleImpl, DialogAndQuest, "DialogAndQuest");

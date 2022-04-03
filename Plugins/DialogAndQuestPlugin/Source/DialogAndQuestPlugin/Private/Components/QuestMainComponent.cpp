@@ -11,11 +11,7 @@
 // Sets default values for this component's properties
 UQuestMainComponent::UQuestMainComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -24,22 +20,20 @@ UQuestMainComponent::UQuestMainComponent()
 void UQuestMainComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 uint32 UQuestMainComponent::FindNextStepID(const FQuestMetaData& QuestData, int32 CurrentStep)
 {
-	if(CurrentStep == -1)
+	if (CurrentStep == -1)
 		return 0;
 
-	for(size_t StepID = 0; StepID < QuestData.Steps.Num()-1 ; ++StepID)
+	for (size_t StepID = 0; StepID < QuestData.Steps.Num() - 1; ++StepID)
 	{
-		if(QuestData.Steps[StepID].QuestSubID == CurrentStep)
+		if (QuestData.Steps[StepID].QuestSubID == CurrentStep)
 		{
-			return QuestData.Steps[StepID+1].QuestSubID;
+			return QuestData.Steps[StepID + 1].QuestSubID;
 		}
 	}
 
@@ -50,11 +44,11 @@ uint32 UQuestMainComponent::FindNextStepID(const FQuestMetaData& QuestData, int3
 
 const FQuestStep& UQuestMainComponent::FindNextStep(const FQuestMetaData& QuestData, int32 CurrentStep)
 {
-	for(size_t StepID = 0; StepID < QuestData.Steps.Num()-1 ; ++StepID)
+	for (size_t StepID = 0; StepID < QuestData.Steps.Num() - 1; ++StepID)
 	{
-		if(QuestData.Steps[StepID].QuestSubID == CurrentStep)
+		if (QuestData.Steps[StepID].QuestSubID == CurrentStep)
 		{
-			return QuestData.Steps[StepID+1];
+			return QuestData.Steps[StepID + 1];
 		}
 	}
 
@@ -90,17 +84,19 @@ void UQuestMainComponent::ForceAddPlayerQuest(APlayerController* PlayerControlle
 	}
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UQuestMainComponent::TryProgressQuest(int64 QuestID, APlayerController* QuestBearer, AActor* Validator)
 {
 	IQuestBearerInterface* QuestBearerInterface = Cast<IQuestBearerInterface>(QuestBearer);
-	if(!QuestBearerInterface)
+	if (!QuestBearerInterface)
 	{
 		UDialogAndQuestPluginHelper::Error("Tried to progress a quest for a non quest bearer");
 		return;
 	}
 
 	IQuestGiverInterface* QuestGiverInterface = Cast<IQuestGiverInterface>(Validator);
-	if(!QuestGiverInterface)
+	if (!QuestGiverInterface)
 	{
 		UDialogAndQuestPluginHelper::Error("Tried to progress a quest from a non quest giver");
 		return;
@@ -109,15 +105,16 @@ void UQuestMainComponent::TryProgressQuest(int64 QuestID, APlayerController* Que
 	const FQuestMetaData& CurrentQuest = GetQuestData(QuestID);
 
 	int32 CurrentStepID = -1;
-	if(QuestBearerInterface->IsQuestKnown(QuestID))
+	if (QuestBearerInterface->IsQuestKnown(QuestID))
 	{
 		const FQuestProgressData& CurrentQuestProgress = QuestBearerInterface->GetKnownQuest(QuestID);
 		CurrentStepID = CurrentQuestProgress.CurrentStep.QuestSubID;
 	}
 
-	if(QuestGiverInterface->GetQuestGiverComponent()->CanValidateQuestStep(QuestID, FindNextStepID(CurrentQuest, CurrentStepID)))
+	if (QuestGiverInterface->GetQuestGiverComponent()->CanValidateQuestStep(
+		QuestID, FindNextStepID(CurrentQuest, CurrentStepID)))
 	{
-		if(CurrentStepID == -1)
+		if (CurrentStepID == -1)
 		{
 			UDialogAndQuestPluginHelper::Log("Adding Quest");
 			QuestBearerInterface->AddQuest(CurrentQuest);
@@ -125,12 +122,11 @@ void UQuestMainComponent::TryProgressQuest(int64 QuestID, APlayerController* Que
 		else
 		{
 			UDialogAndQuestPluginHelper::Log("Progressing Quest");
-			QuestBearerInterface->ProgressQuest(CurrentQuest, FindNextStep(CurrentQuest,CurrentStepID));
+			QuestBearerInterface->ProgressQuest(CurrentQuest, FindNextStep(CurrentQuest, CurrentStepID));
 		}
 	}
 	else
 	{
 		UDialogAndQuestPluginHelper::Warning("Tried to validate an impossible quest state");
 	}
-
 }

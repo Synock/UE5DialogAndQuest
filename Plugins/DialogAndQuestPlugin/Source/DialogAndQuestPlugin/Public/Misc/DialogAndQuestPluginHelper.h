@@ -6,9 +6,6 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "DialogAndQuestPluginHelper.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class DIALOGANDQUESTPLUGIN_API UDialogAndQuestPluginHelper : public UBlueprintFunctionLibrary
 {

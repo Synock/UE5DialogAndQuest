@@ -16,7 +16,6 @@ class DIALOGANDQUESTPLUGIN_API UQuestJournalDetailsWidget : public UUserWidget
 	GENERATED_BODY()
 
 protected:
-
 	UPROPERTY(BlueprintReadOnly)
 	class UQuestJournalWindow* ParentJournal = nullptr;
 
@@ -35,5 +34,4 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void ClearData();
-
 };

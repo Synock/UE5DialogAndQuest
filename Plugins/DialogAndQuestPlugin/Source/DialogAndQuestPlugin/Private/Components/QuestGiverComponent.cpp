@@ -7,11 +7,7 @@
 // Sets default values for this component's properties
 UQuestGiverComponent::UQuestGiverComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -20,33 +16,30 @@ UQuestGiverComponent::UQuestGiverComponent()
 void UQuestGiverComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void UQuestGiverComponent::AddValidableSteps(int64 QuestID, TArray<int32> Steps)
+void UQuestGiverComponent::AddValidatableSteps(int64 QuestID, TArray<int32> Steps)
 {
-	FQuestValidableSteps LocalData;
+	FQuestValidatableSteps LocalData;
 	LocalData.QuestID = QuestID;
 	LocalData.Steps = Steps;
 
-	ValidableSteps.Add(QuestID,std::move(LocalData));
+	ValidatableSteps.Add(QuestID, std::move(LocalData));
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 bool UQuestGiverComponent::CanValidateQuestStep(int64 QuestID, int32 CurrentQuestStep)
 {
-	const ENetRole localRole = GetOwnerRole();
-	if(localRole != ROLE_Authority)
+	if (const ENetRole LocalRole = GetOwnerRole(); LocalRole != ROLE_Authority)
 		return false;
 
-	if (!ValidableSteps.Contains(QuestID))
+	if (!ValidatableSteps.Contains(QuestID))
 		return false;
 
-	if (ValidableSteps.FindChecked(QuestID).Steps.Contains(CurrentQuestStep))
+	if (ValidatableSteps.FindChecked(QuestID).Steps.Contains(CurrentQuestStep))
 		return true;
 
 	return false;

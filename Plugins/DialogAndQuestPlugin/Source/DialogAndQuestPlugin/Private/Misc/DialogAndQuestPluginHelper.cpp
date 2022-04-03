@@ -9,11 +9,15 @@ void UDialogAndQuestPluginHelper::Log(const FString& LogMessage)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("%s"), *LogMessage));
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UDialogAndQuestPluginHelper::Warning(const FString& LogMessage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *LogMessage);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT(" %s"), *LogMessage));
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 void UDialogAndQuestPluginHelper::Error(const FString& LogMessage)
 {

@@ -27,8 +27,12 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	UQuestJournalDetailsWidget* DetailsWidget = nullptr;
 
+	UPROPERTY(BlueprintReadWrite)
+	int64 CurrentQuestID = 0;
+
 	UFUNCTION(BlueprintCallable)
 	void UpdateKnownQuest();
+
 
 public:
 	UFUNCTION(BlueprintCallable)

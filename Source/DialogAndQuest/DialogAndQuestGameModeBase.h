@@ -26,10 +26,9 @@ protected:
 	TObjectPtr<UQuestMainComponent> QuestComponent;
 
 public:
-
 	ADialogAndQuestGameModeBase();
 
-	virtual UDialogMainComponent* GetMainDialogComponent() override {return DialogComponent;}
+	virtual UDialogMainComponent* GetMainDialogComponent() override { return DialogComponent; }
 
-	virtual UQuestMainComponent* GetMainQuestComponent() override { return QuestComponent;}
+	virtual UQuestMainComponent* GetMainQuestComponent() override { return QuestComponent; }
 };

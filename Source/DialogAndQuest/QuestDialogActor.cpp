@@ -17,17 +17,23 @@ AQuestDialogActor::AQuestDialogActor() : ADialogActor()
 	}
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 // Called when the game starts or when spawned
 void AQuestDialogActor::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 // Called every frame
 void AQuestDialogActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 UQuestGiverComponent* AQuestDialogActor::GetQuestGiverComponent() const
 {

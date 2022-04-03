@@ -8,15 +8,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
-
 // Sets default values for this component's properties
 UQuestBearerComponent::UQuestBearerComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -25,8 +20,6 @@ UQuestBearerComponent::UQuestBearerComponent()
 void UQuestBearerComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -65,10 +58,10 @@ bool UQuestBearerComponent::Server_TryProgressAll_Validate(AActor* Validator)
 
 void UQuestBearerComponent::Server_TryProgressAll_Implementation(AActor* Validator)
 {
-	IQuestGiverInterface* ValiatorGiver = Cast<IQuestGiverInterface>(Validator);
+	const IQuestGiverInterface* ValidatorGiver = Cast<IQuestGiverInterface>(Validator);
 
 	for (auto& Data :
-	     ValiatorGiver->GetQuestGiverComponent()->GetValidableQuestSteps())
+	     ValidatorGiver->GetQuestGiverComponent()->GetValidatableQuestSteps())
 	{
 		Server_TryProgressQuest(Data.Key, Validator);
 	}
@@ -95,17 +88,22 @@ void UQuestBearerComponent::ProgressQuest(const FQuestMetaData& QuestMeta, const
 		NewStepProgress.StepTitle = NextQuestStep.StepTitle;
 		NewStepProgress.QuestID = NextQuestStep.QuestID;
 		NewStepProgress.QuestSubID = NextQuestStep.QuestSubID;
+		if (NextQuestStep.FinishingStep)
+		{
+			NewStepProgress.Completed = NextQuestStep.FinishingStep;
+			QData.Finished = true;
+		}
 		QData.CurrentStep = std::move(NewStepProgress);
 	}
-
 
 	OnRep_KnownQuest();
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UQuestBearerComponent::AddQuest(const FQuestMetaData& QuestMeta)
 {
-	const ENetRole LocalRole = GetOwnerRole();
-	if (LocalRole == ROLE_Authority)
+	if (const ENetRole LocalRole = GetOwnerRole(); LocalRole == ROLE_Authority)
 	{
 		if (!KnownQuestDataLUT.Contains(QuestMeta.QuestID))
 		{
@@ -126,9 +124,8 @@ void UQuestBearerComponent::AddQuest(const FQuestMetaData& QuestMeta)
 
 void UQuestBearerComponent::Server_TryProgressQuest_Implementation(int64 QuestID, AActor* Validator)
 {
-	IDialogGameModeInterface* GM = Cast<IDialogGameModeInterface>(UGameplayStatics::GetGameMode(GetWorld()));
-	if (GM)
-		GM->TryProgressQuest(QuestID, Cast<APlayerController>(GetOwner()), Validator);
+	if (IDialogGameModeInterface* Gm = Cast<IDialogGameModeInterface>(UGameplayStatics::GetGameMode(GetWorld())))
+		Gm->TryProgressQuest(QuestID, Cast<APlayerController>(GetOwner()), Validator);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -203,8 +200,7 @@ bool UQuestBearerComponent::IsAtStep(int64 QuestID, int32 StepID) const
 
 void UQuestBearerComponent::AuthorityAddQuest(int64 QuestID)
 {
-	const ENetRole LocalRole = GetOwnerRole();
-	if (LocalRole == ROLE_Authority)
+	if (const ENetRole LocalRole = GetOwnerRole(); LocalRole == ROLE_Authority)
 	{
 		if (!KnownQuestDataLUT.Contains(QuestID))
 		{
@@ -213,7 +209,7 @@ void UQuestBearerComponent::AuthorityAddQuest(int64 QuestID)
 
 			check(IDialogInterface);
 
-			FQuestMetaData QuestData = IDialogInterface->GetMainQuestComponent()->GetQuestData(QuestID);
+			const FQuestMetaData& QuestData = IDialogInterface->GetMainQuestComponent()->GetQuestData(QuestID);
 			FQuestProgressData NewQuestData;
 			NewQuestData.Repeatable = QuestData.Repeatable;
 			NewQuestData.QuestTitle = QuestData.QuestTitle;

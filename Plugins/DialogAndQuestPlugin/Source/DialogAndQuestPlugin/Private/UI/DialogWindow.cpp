@@ -56,10 +56,14 @@ void UDialogWindow::InitDialogWindow(UDialogComponent* InputDialogComponent, AAc
 	}
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UDialogWindow::DisplayJournalUpdate()
 {
 	TopicText->AddEmptyTopicData("<Italic>Your quest journal has been updated.</>");
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 void UDialogWindow::DisplayDialogTopic(int64 ID)
 {
@@ -78,21 +82,25 @@ void UDialogWindow::DisplayDialogTopic(int64 ID)
 		{
 			if (Topic.QuestRelation.QuestID != 0)
 			{
-				for(auto & StepData : Topic.QuestRelation.Steps)
+				for (auto& StepData : Topic.QuestRelation.Steps)
 				{
-					if(BearerInterface->CanValidate(Topic.QuestRelation.QuestID,StepData))
+					if (BearerInterface->CanValidate(Topic.QuestRelation.QuestID, StepData))
 						BearerInterface->TryProgressQuest(
-						   Topic.QuestRelation.QuestID, DialogActor);
+							Topic.QuestRelation.QuestID, DialogActor);
 				}
 			}
 		}
 	}
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UDialogWindow::DisplayDialogTopicFromString(const FString& ID)
 {
 	DisplayDialogTopic(DialogComponent->GetDialogTopicID(ID));
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 void UDialogWindow::CloseWindow()
 {

@@ -22,10 +22,14 @@ public:
 	virtual bool Supports(const FTextRunParseResults& RunParseResult, const FString& Text) const override;
 };
 
+//----------------------------------------------------------------------------------------------------------------------
+
 URichInlineHyperlinkDecorator::URichInlineHyperlinkDecorator(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 FRichInlineHyperlinkDecorator::FRichInlineHyperlinkDecorator(URichTextBlock* InOwner,
                                                              URichInlineHyperlinkDecorator* Decorator)
@@ -34,6 +38,8 @@ FRichInlineHyperlinkDecorator::FRichInlineHyperlinkDecorator(URichTextBlock* InO
 	LinkStyle = Decorator->Style;
 	LocalDecorator = Decorator;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 bool FRichInlineHyperlinkDecorator::Supports(const FTextRunParseResults& RunParseResult, const FString& Text) const
 
@@ -55,6 +61,8 @@ bool FRichInlineHyperlinkDecorator::Supports(const FTextRunParseResults& RunPars
 
 	return false;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 TSharedPtr<SWidget> FRichInlineHyperlinkDecorator::CreateDecoratorWidget(
 	const FTextRunInfo& RunInfo, const FTextBlockStyle& TextStyle) const
@@ -79,13 +87,15 @@ TSharedPtr<SWidget> FRichInlineHyperlinkDecorator::CreateDecoratorWidget(
 	return Link;
 }
 
-//////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------------------------------------------------------------
 
 TSharedPtr<ITextDecorator> URichInlineHyperlinkDecorator::CreateDecorator(URichTextBlock* InOwner)
 {
 	TSharedPtr<ITextDecorator> Output = MakeShareable(new FRichInlineHyperlinkDecorator(InOwner, this));
 	return Output;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 void URichInlineHyperlinkDecorator::ClickFun_Implementation(const FString& ID)
 {

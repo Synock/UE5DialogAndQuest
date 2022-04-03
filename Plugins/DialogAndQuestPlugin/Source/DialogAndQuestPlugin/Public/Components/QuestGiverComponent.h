@@ -23,16 +23,14 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	TMap<int64, FQuestValidableSteps> ValidableSteps;
-
-	void TryValidateQuestStep(int64 QuestID);
+	TMap<int64, FQuestValidatableSteps> ValidatableSteps;
 
 	UFUNCTION(BlueprintCallable)
-	void AddValidableSteps(int64 QuestID, TArray<int32> Steps);
+	void AddValidatableSteps(int64 QuestID, TArray<int32> Steps);
 
 public:
 
 	bool CanValidateQuestStep(int64 QuestID, int32 CurrentQuestStep);
 
-	const TMap<int64, FQuestValidableSteps>& GetValidableQuestSteps() const {return ValidableSteps;}
+	const TMap<int64, FQuestValidatableSteps>& GetValidatableQuestSteps() const {return ValidatableSteps;}
 };

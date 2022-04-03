@@ -2,19 +2,24 @@
 
 
 #include "UI/QuestJournal/QuestJournalWindow.h"
-
 #include "Interfaces/QuestBearerInterface.h"
 
 void UQuestJournalWindow::UpdateKnownQuest()
 {
 	ListWidget->UpdateQuestList();
+
+	if (CurrentQuestID == 0 && QuestComponent->GetAllKnownQuest().Num() > 0)
+	{
+		CurrentQuestID = QuestComponent->GetAllKnownQuest()[0].QuestID;
+	}
+	DisplayQuest(CurrentQuestID);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 void UQuestJournalWindow::InitJournal()
 {
-	if(IQuestBearerInterface* QuestBearer = Cast<IQuestBearerInterface>(GetOwningPlayer()))
+	if (IQuestBearerInterface* QuestBearer = Cast<IQuestBearerInterface>(GetOwningPlayer()))
 	{
 		QuestComponent = QuestBearer->GetQuestBearerComponent();
 		QuestComponent->KnownQuestDispatcher.AddDynamic(this, &UQuestJournalWindow::UpdateKnownQuest);
@@ -28,5 +33,6 @@ void UQuestJournalWindow::InitJournal()
 
 void UQuestJournalWindow::DisplayQuest(int64 ID)
 {
+	CurrentQuestID = ID;
 	DetailsWidget->DisplayQuestData(ID);
 }

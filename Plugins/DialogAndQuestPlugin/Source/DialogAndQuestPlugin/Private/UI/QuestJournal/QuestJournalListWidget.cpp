@@ -19,7 +19,6 @@ void UQuestJournalListWidget::UpdateQuestList()
 	check(ParentJournal);
 	for (auto& QuestData : QuestBearerComponent->GetAllKnownQuest())
 	{
-		if (!QuestData.Finished)
-			AddQuestTitleData(QuestData);
+		AddQuestTitleData(QuestData);
 	}
 }

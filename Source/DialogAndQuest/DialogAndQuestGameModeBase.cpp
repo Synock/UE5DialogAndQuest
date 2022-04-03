@@ -9,7 +9,6 @@ void ADialogAndQuestGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 	FDialogTopicStruct Topic1;
 	Topic1.Id = 1;
 	Topic1.Topic = "Lorem";
@@ -39,19 +38,22 @@ void ADialogAndQuestGameModeBase::BeginPlay()
 	FDialogTopicStruct Topic3;
 	Topic3.Id = 3;
 	Topic3.Topic = "Nulla";
-	Topic3.TopicText ="Nulla iaculis posuere ex, rutrum tempor erat imperdiet non. Pellentesque vel risus ac orci placerat sollicitudin. Ut faucibus nibh elit, pharetra tempus nisi lobortis non. Vivamus at lacus ligula. Nulla facilisi. Donec a ornare tellus. Aenean sollicitudin placerat interdum. Etiam laoreet dolor sed diam ultrices sollicitudin. Proin tincidunt sodales magna sed maximus. Vestibulum mattis ornare purus non suscipit. Phasellus vehicula vehicula pretium. Fusce sed diam nec tortor tristique suscipit. Nunc dignissim porttitor elit in convallis. Phasellus maximus volutpat justo, ut vestibulum turpis varius sagittis. ";
+	Topic3.TopicText =
+		"Nulla iaculis posuere ex, rutrum tempor erat imperdiet non. Pellentesque vel risus ac orci placerat sollicitudin. Ut faucibus nibh elit, pharetra tempus nisi lobortis non. Vivamus at lacus ligula. Nulla facilisi. Donec a ornare tellus. Aenean sollicitudin placerat interdum. Etiam laoreet dolor sed diam ultrices sollicitudin. Proin tincidunt sodales magna sed maximus. Vestibulum mattis ornare purus non suscipit. Phasellus vehicula vehicula pretium. Fusce sed diam nec tortor tristique suscipit. Nunc dignissim porttitor elit in convallis. Phasellus maximus volutpat justo, ut vestibulum turpis varius sagittis. ";
 	DialogComponent->AddTopic(Topic3);
 
 	FDialogTopicStruct Topic4;
 	Topic4.Id = 4;
 	Topic4.Topic = "Maecenas";
-	Topic4.TopicText ="Maecenas lacinia metus sed nulla cursus, eu scelerisque metus facilisis. Nullam venenatis elit id purus rutrum convallis. Nulla eu accumsan magna, a porta sem. Praesent non egestas arcu. Aliquam luctus vitae ante ut ornare. Suspendisse at faucibus eros. Sed ac nisl aliquet, ornare lorem quis, sollicitudin nunc. Proin sodales purus sed mauris semper, eget hendrerit nisl pulvinar. Pellentesque non leo arcu. Sed sodales iaculis diam, quis mollis sapien tincidunt in. Morbi scelerisque nibh at enim condimentum congue at at risus. Suspendisse non tellus eget turpis eleifend lobortis vitae a odio. Mauris suscipit placerat leo. Cras sem dolor, volutpat ac nisi at, facilisis volutpat ante. Donec nibh neque, bibendum pretium libero ac, congue vehicula metus. ";
+	Topic4.TopicText =
+		"Maecenas lacinia metus sed nulla cursus, eu scelerisque metus facilisis. Nullam venenatis elit id purus rutrum convallis. Nulla eu accumsan magna, a porta sem. Praesent non egestas arcu. Aliquam luctus vitae ante ut ornare. Suspendisse at faucibus eros. Sed ac nisl aliquet, ornare lorem quis, sollicitudin nunc. Proin sodales purus sed mauris semper, eget hendrerit nisl pulvinar. Pellentesque non leo arcu. Sed sodales iaculis diam, quis mollis sapien tincidunt in. Morbi scelerisque nibh at enim condimentum congue at at risus. Suspendisse non tellus eget turpis eleifend lobortis vitae a odio. Mauris suscipit placerat leo. Cras sem dolor, volutpat ac nisi at, facilisis volutpat ante. Donec nibh neque, bibendum pretium libero ac, congue vehicula metus. ";
 	DialogComponent->AddTopic(Topic4);
 
 	FDialogTopicStruct Topic5;
 	Topic5.Id = 5;
 	Topic5.Topic = "Praesent";
-	Topic5.TopicText ="Praesent rhoncus porta elit, a interdum arcu lacinia nec. Fusce placerat, neque in scelerisque faucibus, sapien ex feugiat turpis, vitae dignissim purus arcu eget metus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam vehicula tempus rutrum. Maecenas rutrum ullamcorper aliquet. Etiam id odio lacus. Sed non mi sit amet erat bibendum mollis ut ac justo. ";
+	Topic5.TopicText =
+		"Praesent rhoncus porta elit, a interdum arcu lacinia nec. Fusce placerat, neque in scelerisque faucibus, sapien ex feugiat turpis, vitae dignissim purus arcu eget metus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam vehicula tempus rutrum. Maecenas rutrum ullamcorper aliquet. Etiam id odio lacus. Sed non mi sit amet erat bibendum mollis ut ac justo. ";
 	DialogComponent->AddTopic(Topic5);
 
 	FDialogTopicStruct TopicSecret;
@@ -64,7 +66,7 @@ void ADialogAndQuestGameModeBase::BeginPlay()
 	FDialogTopicBundleStruct Bundle;
 	Bundle.Id = 1;
 	Bundle.MetaName = "TestBundle";
-	Bundle.TopicList = {1,2,3,4,5,6};
+	Bundle.TopicList = {1, 2, 3, 4, 5, 6};
 
 	FDialogTopicMetaBundleStruct MetaBundle;
 	MetaBundle.Id = 1;
@@ -73,8 +75,6 @@ void ADialogAndQuestGameModeBase::BeginPlay()
 
 	DialogComponent->AddBundle(Bundle);
 	DialogComponent->AddMetaBundle(MetaBundle);
-
-
 
 
 	{
@@ -99,6 +99,7 @@ void ADialogAndQuestGameModeBase::BeginPlay()
 		Step3.StepTitle = "Quest Finished";
 		Step3.StepDescription = "This quest is now finished or something";
 		Step3.QuestSubID = 20;
+		Step3.FinishingStep = true;
 		QuestData1.Steps.Add(Step3);
 
 		QuestComponent->AddQuest(QuestData1);
@@ -154,7 +155,6 @@ void ADialogAndQuestGameModeBase::BeginPlay()
 	}
 
 
-
 	{
 		FQuestMetaData QuestData2;
 		QuestData2.Repeatable = false;
@@ -179,20 +179,24 @@ void ADialogAndQuestGameModeBase::BeginPlay()
 		Step3.QuestSubID = 20;
 		QuestData2.Steps.Add(Step3);
 
+		FQuestStep Step4;
+		Step4.StepTitle = "My world tour is now complete";
+		Step4.StepDescription = "Yay";
+		Step4.QuestSubID = 30;
+		Step4.FinishingStep = true;
+		QuestData2.Steps.Add(Step4);
+
 		QuestComponent->AddQuest(QuestData2);
 	}
-
-
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 ADialogAndQuestGameModeBase::ADialogAndQuestGameModeBase()
 {
 	if (HasAuthority())
 	{
 		DialogComponent = CreateDefaultSubobject<UDialogMainComponent>("DialogMainComponent");
-		//DialogComponent->SetNetAddressable();
-		//DialogComponent->SetIsReplicated(true);
-
 		QuestComponent = CreateDefaultSubobject<UQuestMainComponent>("QuestMainComponent");
 	}
 }

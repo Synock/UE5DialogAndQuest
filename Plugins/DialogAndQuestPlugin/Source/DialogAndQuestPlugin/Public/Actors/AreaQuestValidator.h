@@ -24,7 +24,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UBoxComponent> BoxComponent = nullptr;
 
-	UPROPERTY( BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UQuestGiverComponent> QuestComponent = nullptr;
 
 	UFUNCTION()

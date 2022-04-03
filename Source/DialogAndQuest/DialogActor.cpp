@@ -21,11 +21,15 @@ ADialogActor::ADialogActor()
 	}
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 // Called when the game starts or when spawned
 void ADialogActor::BeginPlay()
 {
 	Super::BeginPlay();
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 // Called every frame
 void ADialogActor::Tick(float DeltaTime)
@@ -33,15 +37,21 @@ void ADialogActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 float ADialogActor::GetRelation() const
 {
 	return BP_GetRelation();
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 UDialogComponent* ADialogActor::GetDialogComponent() const
 {
 	return Dialog;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 FString ADialogActor::GetRelationString(float Relation) const
 {

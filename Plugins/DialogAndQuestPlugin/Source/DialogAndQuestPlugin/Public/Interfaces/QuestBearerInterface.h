@@ -28,7 +28,7 @@ public:
 	virtual const UQuestBearerComponent* GetQuestBearerComponentConst() const = 0;
 
 	virtual bool CanValidate(int64 QuestID, int32 StepID) const;
-	
+
 	virtual bool CanDisplay(int64 QuestID, int32 StepID) const;
 
 	//this is called from client

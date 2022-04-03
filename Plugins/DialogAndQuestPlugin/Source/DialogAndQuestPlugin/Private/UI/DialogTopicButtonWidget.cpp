@@ -8,6 +8,8 @@ void UDialogTopicButtonWidget::InitParent(UDialogWindow* Parent)
 	ParentDialog = Parent;
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UDialogTopicButtonWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);

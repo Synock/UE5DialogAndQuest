@@ -5,7 +5,7 @@
 
 AQuestAndDialogPlayerController::AQuestAndDialogPlayerController(const FObjectInitializer& ObjectInitializer)
 {
-	if(HasAuthority())
+	if (HasAuthority())
 	{
 		QuestBearerComponent = CreateDefaultSubobject<UQuestBearerComponent>(TEXT("QuestBearerComponent"));
 		QuestBearerComponent->SetIsReplicated(true);
@@ -13,10 +13,14 @@ AQuestAndDialogPlayerController::AQuestAndDialogPlayerController(const FObjectIn
 	}
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 UQuestBearerComponent* AQuestAndDialogPlayerController::GetQuestBearerComponent()
 {
 	return QuestBearerComponent;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 const UQuestBearerComponent* AQuestAndDialogPlayerController::GetQuestBearerComponentConst() const
 {

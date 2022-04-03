@@ -11,11 +11,15 @@ void UDialogTextWidget::AddEmptyTopicData(const FString& DialogText)
 	AddTopicData(TextData);
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void UDialogTextWidget::InitDialog(UDialogWindow* InputParentDialog)
 {
 	ParentDialog = InputParentDialog;
 	DialogComponent = InputParentDialog->GetDialogComponent();
 }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 void UDialogTextWidget::AddTopicText(int64 TopicID)
 {

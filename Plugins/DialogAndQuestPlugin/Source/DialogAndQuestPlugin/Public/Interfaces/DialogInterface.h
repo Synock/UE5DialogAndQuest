@@ -14,9 +14,6 @@ class UDialogInterface : public UInterface
 	GENERATED_BODY()
 };
 
-/**
- * 
- */
 class DIALOGANDQUESTPLUGIN_API IDialogInterface
 {
 	GENERATED_BODY()

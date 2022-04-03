@@ -11,24 +11,22 @@ bool FDialogTopicCondition::VerifyCondition(const AActor* DialogActor, const APl
 {
 	bool StandardReturn = false;
 	if (const IDialogInterface* DialogInterfaceActor = Cast<IDialogInterface>(DialogActor); DialogInterfaceActor)
-		StandardReturn =  DialogInterfaceActor->GetRelation() >= MinimumRelation;
+		StandardReturn = DialogInterfaceActor->GetRelation() >= MinimumRelation;
 
-	if(QuestId != 0)
+	if (QuestId != 0)
 	{
-		if(const IQuestBearerInterface* QuestBearer = Cast<IQuestBearerInterface>(Controller); QuestBearer)
+		if (const IQuestBearerInterface* QuestBearer = Cast<IQuestBearerInterface>(Controller); QuestBearer)
 		{
 			if (const IQuestGiverInterface* QuestActor = Cast<IQuestGiverInterface>(DialogActor); QuestActor)
 			{
-				bool QuestCondition = QuestBearer->CanDisplay(QuestId, MinimumStepID);
+				const bool QuestCondition = QuestBearer->CanDisplay(QuestId, MinimumStepID);
 
 				return QuestCondition && StandardReturn;
 			}
 		}
 
 		return false;
-
 	}
 
 	return StandardReturn;
 }
-
