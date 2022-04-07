@@ -6,13 +6,17 @@
 
 void UQuestJournalWindow::UpdateKnownQuest()
 {
-	ListWidget->UpdateQuestList();
-
-	if (CurrentQuestID == 0 && QuestComponent->GetAllKnownQuest().Num() > 0)
+	if(ListWidget)
 	{
-		CurrentQuestID = QuestComponent->GetAllKnownQuest()[0].QuestID;
+		ListWidget->UpdateQuestList();
+
+		if (CurrentQuestID == 0 && QuestComponent->GetAllKnownQuest().Num() > 0)
+		{
+			CurrentQuestID = QuestComponent->GetAllKnownQuest()[0].QuestID;
+		}
+		DisplayQuest(CurrentQuestID);
 	}
-	DisplayQuest(CurrentQuestID);
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------
