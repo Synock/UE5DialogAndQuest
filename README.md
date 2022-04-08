@@ -5,8 +5,8 @@
 This plugin is an old school dialog system based on topic. It is inspired in its look and feel from the dialog system of Morrowind.
 It also includes a basic quest system, with a simple quest journal.
 
-![Dialog window](./Doc/Images/to/DialogWindow.png?raw=true "DialogWindow")
-![Quest journal](./Doc/Images/to/QuestJournal.png?raw=true "QuestJournal")
+![Dialog window](./Doc/Images/DialogWindow.png?raw=true "DialogWindow")
+![Quest journal](./Doc/Images/QuestJournal.png?raw=true "QuestJournal")
 
 The two are linked together because of the way quest progression is tied to dialog topics and dialog topics can be tied to quest condition.
 However, the dialog system is totally standalone and does not need the quest to work as intended.
