@@ -1,0 +1,3 @@
+[submodule "Plugins/DialogAndQuestPlugin"]
+	path = Plugins/DialogAndQuestPlugin
+	url = https://github.com/Synock/UE5DialogAndQuestPlugin.git
